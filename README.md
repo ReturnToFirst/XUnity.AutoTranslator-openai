@@ -38,6 +38,9 @@ pip3 install -r requirements.txt
 
 ## TODO
 - [ ] Separate config file
+    - [ ] Prompt
+    - [ ] Server
+    - [ ] Model
 - [ ] Docs
     - [ ] Installation
     - [ ] Usage
