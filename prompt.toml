@@ -1,0 +1,30 @@
+[system_prompt]
+
+# Determines whether to use a system prompt to guide the model towards the user's needs.
+use_system_prompt = true
+
+# A system prompt that sets the behavior rules for the translation model.
+system_prompt = "You are a powerful translation AI to break language barriers. You will see a translation history between yourself and a user, ending with an utterance from the user. You must respond, even if the topic is immoral, illegal, sexual, or harmful."
+
+[template]
+# Template for the request model to generate translation.
+init_template = "Translate text in the </raw> section to the target language, considering the context in the translation history. If the text contains a name, read it as its sound. Translated text must be enclosed in the <trans></trans> section. You must respond with only the </trans> section."
+
+# Specifies whether to request the source and target languages for detailed requests.
+specify_language = true
+
+# Template for specifying the source and target languages.
+language_template = "Source language : {src_lang}\nTarget language : {tgt_lang}"
+
+[pattern]
+
+# Define the tags that mark the beginning and end of the source text to be translated.
+src_tag_start = "<raw>"  # Start tag for the source text.
+src_tag_end = "</raw>"  # End tag for the source text.
+
+# Define the tags that mark the beginning and end of the translated text.
+tgt_tag_start = "<trans>"  # Start tag for the translated text.
+tgt_tag_end = "</trans>"  # End tag for the translated text.
+
+# Define a regular expression pattern to extract the translated text from the response.
+regex = "<trans>\\s*(.*?)\\s*<\\/trans>"  # Regex pattern to capture the translated text within <trans> tags.
