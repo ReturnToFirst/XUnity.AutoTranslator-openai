@@ -16,7 +16,6 @@ model = "gpt-3.5-turbo"
 ## Server configuration
 # This section contains configuration for the server.
 
-
 # The host on which the server will listen for incoming requests.
 host = "0.0.0.0"
 
@@ -27,11 +26,8 @@ port = 5000
 # This section contains configuration for the database.
 # database will cache already translated text.
 
-# The type of database to use. Options include 'sqlite', 'mysql', 'postgresql', etc.
-type = "sqlite"
-
 # The name of the database file.
-file = "app.db"
+file = "translated_texts.db" # database file name
 
 [logging]
 # The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
