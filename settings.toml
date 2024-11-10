@@ -1,0 +1,64 @@
+[openai]
+# This section contains configuration for interacting with the OpenAI API.
+
+
+# The URL for the OpenAI API.
+url = "https://api.openai.com/v1"
+
+# Your API key
+api_key = "your_api_key_here"
+
+# model name to use for generating text. Options include 'gpt-3.5-turbo', 'gpt-4', etc.
+model = "gpt-3.5-turbo"
+
+
+[server]
+## Server configuration
+# This section contains configuration for the server.
+
+
+# The host on which the server will listen for incoming requests.
+host = "0.0.0.0"
+
+# The port on which the server will listen for incoming requests.
+port = 5000
+
+[database]
+# This section contains configuration for the database.
+# database will cache already translated text.
+
+# The type of database to use. Options include 'sqlite', 'mysql', 'postgresql', etc.
+type = "sqlite"
+
+# The name of the database file.
+file = "app.db"
+
+[logging]
+# The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
+level = "INFO"
+
+# The file to which logs will be written.
+file = "app.log"
+
+
+[model]
+# Model parameters
+## This section contains parameters for the model used for generating text.
+
+
+# The temperature controls the randomness of the output. Lower values make the output more deterministic.
+temperature = 0.3
+
+# The maximum number of tokens to generate in the output.
+max_tokens = 2048
+
+# This value controls the penalty applied to repeated words or phrases in the generated text.
+# A value of 0.0 means no penalty, allowing for the repetition of words without any additional cost.
+frequency_penalty = 0.0
+
+# The presence penalty controls the penalty applied to new lines in the generated text.
+# A value of 0.0 means no penalty, allowing for the repetition of new lines without any additional cost.
+presence_penalty = 0.0
+
+
+
