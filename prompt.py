@@ -50,6 +50,9 @@ class Template:
         else:
             translated_text = ""
         return translated_text
+    
+    def get_language_target_prompt(self, src_lang:str, tgt_lang:str):
+        return self.language_template.format(src_lang=src_lang, tgt_lang=tgt_lang)
 
 @dataclass
 class SystemPrompt:
