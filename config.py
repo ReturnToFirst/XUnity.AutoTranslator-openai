@@ -22,15 +22,7 @@ class Config:
     ServerConfig = None
     DatabaseConfig = None
     LoggingConfig = None
-    def __init__(self):
-        # Initializes the configuration objects.
-        self.OpenAIConfig = OpenAIConfig()
-        self.ModelConfig = ModelConfig()
-        self.ServerConfig = ServerConfig()
-        self.DatabaseConfig = DatabaseConfig()
-        self.LoggingConfig = LoggingConfig()
-
-    def load_config(self, config_file:str):
+    def __init__(self, config_file:str):
         """
         Loads the configuration settings from a TOML file.
 
@@ -53,11 +45,11 @@ class Config:
         database_config = config_dict['database']
         logging_config = config_dict['logging']
 
-        self.OpenAIConfig = OpenAIConfig(openai_config['url'], openai_config['api_key'], openai_config['model_name'])
+        self.OpenAIConfig = OpenAIConfig(openai_config['url'], openai_config['api_key'], openai_config['model'])
         self.ModelConfig = ModelConfig(model_config['temperature'], model_config['max_tokens'], model_config['frequency_penalty'], model_config['presence_penalty'])
         self.ServerConfig = ServerConfig(server_config['host'], server_config['port'])
-        self.DatabaseConfig = DatabaseConfig(database_config['db_filename'])
-        self.LoggingConfig = LoggingConfig(logging_config['log_filename'], logging_config['log_level'])
+        self.DatabaseConfig = DatabaseConfig(database_config['db_file'])
+        self.LoggingConfig = LoggingConfig(logging_config['log_file'], logging_config['log_level'])
 
 @dataclass
 class OpenAIConfig:
@@ -70,10 +62,10 @@ class OpenAIConfig:
         model_name (str): The name of the language model to be used with the OpenAI API.
     """
 
-    def __init__(self, url:str, api_key:str, model_name:str):
+    def __init__(self, url:str, api_key:str, model:str):
         self.url = url
         self.api_key = api_key
-        self.model_name = model_name
+        self.model = model
 
 @dataclass
 class ModelConfig:
@@ -117,8 +109,8 @@ class DatabaseConfig:
         db_filename (str): The filename of the database file.
     """
 
-    def __init__(self, db_filename:str):
-        self.db_filename = db_filename
+    def __init__(self, db_file:str):
+        self.db_file = db_file
 
 
 @dataclass
@@ -131,7 +123,6 @@ class LoggingConfig:
         log_level (str): The logging level (e.g., 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL').
     """
 
-    def __init__(self, log_filename:str, log_level:str):
-        self.log_filename = log_filename
+    def __init__(self, log_file:str, log_level:str):
+        self.log_file = log_file
         self.log_level = log_level
-

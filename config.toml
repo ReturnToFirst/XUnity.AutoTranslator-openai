@@ -27,14 +27,14 @@ port = 5000
 # database will cache already translated text.
 
 # The name of the database file.
-file = "translated_texts.db" # database file name
+db_file = "translated_texts.db" # database file name
 
 [logging]
 # The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
-level = "INFO"
+log_level = "INFO"
 
 # The file to which logs will be written.
-file = "app.log"
+log_file = "app.log"
 
 
 [model]
