@@ -3,6 +3,9 @@ import toml
 
 class Template:
     def __init__(self, init_template:str, specify_language:bool, language_template:str):
+        self.src_prompt = ""
+        self.tgt_regex = ""
+
         self.init_template = init_template
         self.specify_language = specify_language
         self.language_template = language_template
@@ -27,30 +30,30 @@ class SystemPrompt:
             system_prompt=config_dict['system_prompt']
         )
 
-class Pattern:
-    def __init__(self, src_tag_start:str, src_tag_end:str, tgt_tag_start:str, tgt_tag_end:str, regex_pattern:str):
-        self.regex_pattern= regex_pattern
-        self.src_tag_start = src_tag_start
-        self.src_tag_end = src_tag_end
-        self.tgt_tag_start = tgt_tag_start
-        self.tgt_tag_end = tgt_tag_end
+class Tag:
+    def __init__(self, src_start:str, src_end:str, tgt_start:str, tgt_end:str):
+        self.src_start = src_start
+        self.src_end = src_end
+        self.tgt_start = tgt_start
+        self.tgt_end = tgt_end
     
     @classmethod
     def from_dict(cls, config_dict:dict):
         return cls(
-            src_tag_start=config_dict['src_tag_start'],
-            src_tag_end=config_dict['src_tag_end'],
-            tgt_tag_start=config_dict['tgt_tag_start'],
-            tgt_tag_end=config_dict['tgt_tag_end'],
-            regex_pattern=config_dict['regex_pattern']
+            src_start=config_dict['src_start'],
+            src_end=config_dict['src_end'],
+            tgt_start=config_dict['tgt_start'],
+            tgt_end=config_dict['tgt_end'],
         )
 
 @dataclass
 class Prompt:
-    def __init__(self, system_prompt:SystemPrompt, template:Template, pattern:Pattern):
+    def __init__(self, system_prompt:SystemPrompt, template:Template, tag:Tag):
         self.template = template
         self.system_prompt = system_prompt
-        self.pattern = pattern
+        self.tag = tag
+        self.template.src_prompt = f"{self.tag.src_start} {{raw_text}} {self.tag.src_end}"
+        self.template.tgt_regex = f"{self.tag.tgt_start}\\s*(.*?)\\s*{self.tag.tgt_end}"
         
     @classmethod
     def from_toml(cls, prompt_file:str=r"prompt.toml"):
@@ -62,8 +65,8 @@ class Prompt:
         
         system_prompt = config_dict['system_prompt']
         template = config_dict['template']
-        pattern = config_dict['pattern']
+        tag = config_dict['tag']
 
         return cls(SystemPrompt.from_dict(system_prompt),
                    Template.from_dict(template),
-                   Pattern.from_dict(pattern))
+                   Tag.from_dict(tag))

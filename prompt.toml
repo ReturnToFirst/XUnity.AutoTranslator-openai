@@ -8,7 +8,7 @@ system_prompt = "You are a powerful translation AI to break language barriers. Y
 
 [template]
 # Template for the request model to generate translation.
-init_template = "Translate text in the {src_tag_start}{src_tag_end} section to the target language, considering the context in the translation history. If the text contains a name, read it as its sound. Translated text must be enclosed in the {tgt_tag_start}{tgt_tag_end} section. You must respond with only the {tgt_tag_end} section."
+init_template = "Translate text in the {src_start}{src_end} section to the target language, considering the context in the translation history. If the text contains a name, read it as its sound. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section."
 
 # Specifies whether to request the source and target languages for detailed requests.
 specify_language = true
@@ -16,15 +16,12 @@ specify_language = true
 # Template for specifying the source and target languages.
 language_template = "Source language : {src_lang}\nTarget language : {tgt_lang}"
 
-[pattern]
+[tag]
 
 # Define the tags that mark the beginning and end of the source text to be translated.
-src_tag_start = "<raw>"  # Start tag for the source text.
-src_tag_end = "</raw>"  # End tag for the source text.
+src_start = "<raw>"  # Start tag for the source text.
+src_end = "</raw>"  # End tag for the source text.
 
 # Define the tags that mark the beginning and end of the translated text.
-tgt_tag_start = "<trans>"  # Start tag for the translated text.
-tgt_tag_end = "</trans>"  # End tag for the translated text.
-
-# Define a regular expression pattern to extract the translated text from the response.
-regex_pattern = "{tgt_tag_start}\\s*(.*?)\\s*{tgt_tag_end}"  # Regex pattern to capture the translated text within taranslated section.
+tgt_start = "<trans>"  # Start tag for the translated text.
+tgt_end = "</trans>"  # End tag for the translated text.
