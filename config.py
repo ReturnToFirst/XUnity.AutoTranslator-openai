@@ -3,13 +3,13 @@ import toml
 
 @dataclass
 class OpenAIConfig:
-    url: str
+    base_url: str
     api_key: str
     model_name: str
     
     @classmethod
     def from_dict(cls, config_dict:dict):
-        return cls(url=config_dict['base_url'],
+        return cls(base_url=config_dict['base_url'],
                    api_key=config_dict['api_key'],
                    model_name=config_dict['model_name'])
 
@@ -31,7 +31,7 @@ class ModelConfig:
 class ServerConfig:
     host: str
     port: str
-    
+
     @classmethod
     def from_dict(cls, config_dict:dict):
         return cls(host=config_dict['host'],
@@ -59,7 +59,6 @@ class LoggingConfig:
 
 @dataclass
 class Config:
-
     openai_config: OpenAIConfig
     model_config: ModelConfig
     server_config: ServerConfig
@@ -74,14 +73,8 @@ class Config:
             print(f"Error loading config file: {e}")
             raise e
         
-        openai_config = config_dict['openai']
-        model_config = config_dict['model']
-        server_config = config_dict['server']
-        database_config = config_dict['database']
-        logging_config = config_dict['logging']
-        
-        return cls(OpenAIConfig.from_dict(openai_config),
-                   ModelConfig.from_dict(model_config),
-                   ServerConfig.from_dict(server_config),
-                   DatabaseConfig.from_dict(database_config),
-                   LoggingConfig.from_dict(logging_config))
+        return cls(OpenAIConfig.from_dict(config_dict['openai']),
+                   ModelConfig.from_dict(config_dict['model']),
+                   ServerConfig.from_dict(config_dict['server']),
+                   DatabaseConfig.from_dict(config_dict['database']),
+                   LoggingConfig.from_dict(config_dict['logging']))
