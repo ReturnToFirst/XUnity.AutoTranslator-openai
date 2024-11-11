@@ -13,7 +13,7 @@ This project is compatible with openai API.
 - [openai](https://pypi.org/project/openai/)
 
 You can install requirement with
-```bash
+```
 pip3 install -r requirements.txt
 ```
 
@@ -21,18 +21,18 @@ pip3 install -r requirements.txt
 1. Install Depandencies
 2. Configure the provider in XUnity.AutoTranslator
     1. Changer Provider to 'CustomTranslate' in [Service] section.
-    ```toml
+    ```
     [Service]
     Endpoint=CustomTranslate
     ```
     2. Set server url in [Custom] section.
-    ```toml
+    ```
     [Custom]
     Url=http://<server_url>:<server_port>/translate
     ```
 
 3. Turn on server in console
-    ```bash
+    ```
     python3 main.py
     ```
 
