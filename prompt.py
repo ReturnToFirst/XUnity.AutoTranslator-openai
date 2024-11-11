@@ -24,7 +24,7 @@ class Template:
     tag: Tag
 
     def __post_init__(self):
-        self.src_prompt = f"{self.tag.src_start} {{tgt_text}} {self.tag.src_end}"
+        self.src_prompt = f"{self.tag.src_start}{{src_text}}{self.tag.src_end}"
         self.tgt_regex = f"{self.tag.tgt_start}\\s*(.*?)\\s*{self.tag.tgt_end}"
         self.task_template = self.task_template.format(src_start=self.tag.src_start,
                                                       src_end=self.tag.src_end,
