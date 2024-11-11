@@ -16,8 +16,7 @@ specify_language = true
 # Template for specifying the source and target languages.
 language_template = "Source language : {src_lang}\nTarget language : {tgt_lang}"
 
-[tag]
-
+[template.tag]
 # Define the tags that mark the beginning and end of the source text to be translated.
 src_start = "<raw>"  # Start tag for the source text.
 src_end = "</raw>"  # End tag for the source text.
