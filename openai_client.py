@@ -27,15 +27,16 @@ class LLMClient:
         task_prompt: str = field(init=False)
 
 
-    def request_completion(self, chat_history:ChatHistory):
+    def request_completion(self):
         try:
             completion = self.client.chat.completions.create(
                         model=self.config.openai_config.model_name,
-                        messages=chat_history,
+                        messages=self.chat_history,
                         temperature=self.config.model_config.temperature,
                         frequency_penalty=self.config.model_config.frequency_penalty,
                         presence_penalty=self.config.model_config.presence_penalty
                         )
+
         except Exception as e:
             print(f"Error in OpenAI completion. Error : {e}")
             return e
