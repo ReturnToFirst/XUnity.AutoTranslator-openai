@@ -54,3 +54,22 @@ pip3 install -r requirements.txt
     - [x] Config
     - [x] Main
     - [ ] Server
+    - [ ] Logger
+    - [ ] Error handling
+- [ ] Config
+    - [x] Custom url
+    - [x] Disable system template
+    - [ ] Disable history
+- [ ] Database
+    - [ ] Translation history
+- [ ] API
+    - [ ] Translation
+    - [ ] Reset
+- [ ] UI
+    - [ ] WebUI
+        - [ ] Control configs
+        - [ ] Reset
+        - [ ] Custom prompts
+            - [ ] System prompt
+            - [ ] Task template
+        - [ ] Translation history
