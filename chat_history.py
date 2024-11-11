@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 
 @dataclass
 class ChatHistory:
-    chat_history: list
+    chat_history: list = field(default_factory=list)
     system_prompt: str = field(init=False)
     task_prompt: str = field(init=False)
 
