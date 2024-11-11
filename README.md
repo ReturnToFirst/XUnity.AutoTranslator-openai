@@ -37,10 +37,10 @@ pip3 install -r requirements.txt
     ```
 
 ## TODO
-- [ ] Separate config file
-    - [ ] Prompt
-    - [ ] Server
-    - [ ] Model
+- [x] Separate config file
+    - [x] Prompt
+    - [x] Server
+    - [x] Model
 - [ ] Docs
     - [ ] Installation
     - [ ] Usage
