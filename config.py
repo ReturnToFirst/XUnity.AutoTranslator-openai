@@ -22,7 +22,7 @@ class Config:
     ServerConfig = None
     DatabaseConfig = None
     LoggingConfig = None
-    def __init__(self, config_file:str):
+    def __init__(self, config_file:str=r"config.toml"):
         """
         Loads the configuration settings from a TOML file.
 
