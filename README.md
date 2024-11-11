@@ -52,5 +52,5 @@ pip3 install -r requirements.txt
     - [x] Template
     - [x] Completion request
     - [x] Config
-    - [ ] Main
+    - [x] Main
     - [ ] Server
