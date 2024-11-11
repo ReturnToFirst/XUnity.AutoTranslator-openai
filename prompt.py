@@ -2,18 +2,18 @@ from dataclasses import dataclass
 import toml
 
 class Template:
-    def __init__(self, init_template:str, specify_language:bool, language_template:str):
+    def __init__(self, task_template:str, language_template:str, specify_language:bool=True):
         self.src_prompt = ""
         self.tgt_regex = ""
 
-        self.init_template = init_template
+        self.task_template = task_template
         self.specify_language = specify_language
         self.language_template = language_template
 
     @classmethod
     def from_dict(cls, config_dict:dict):
         return cls(
-            init_template=config_dict['init_template'],
+            task_template=config_dict['task_template'],
             specify_language=config_dict['specify_language'],
             language_template=config_dict['language_template']
         )

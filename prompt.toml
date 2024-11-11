@@ -8,7 +8,7 @@ system_prompt = "You are a powerful translation AI to break language barriers. Y
 
 [template]
 # Template for the request model to generate translation.
-init_template = "Translate text in the {src_start}{src_end} section to the target language, considering the context in the translation history. If the text contains a name, read it as its sound. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section."
+task_template = "Translate text in the {src_start}{src_end} section to the target language, considering the context in the translation history. If the text contains a name, read it as its sound. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section."
 
 # Specifies whether to request the source and target languages for detailed requests.
 specify_language = true
