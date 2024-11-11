@@ -52,7 +52,7 @@ class Prompt:
         self.template = template
         self.system_prompt = system_prompt
         self.tag = tag
-        self.template.src_prompt = f"{self.tag.src_start} {{raw_text}} {self.tag.src_end}"
+        self.template.src_prompt = f"{self.tag.src_start} {{tgt_text}} {self.tag.src_end}"
         self.template.tgt_regex = f"{self.tag.tgt_start}\\s*(.*?)\\s*{self.tag.tgt_end}"
         
     @classmethod
