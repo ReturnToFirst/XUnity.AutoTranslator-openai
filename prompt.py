@@ -22,10 +22,12 @@ class Template:
     specify_language: bool
     language_template: str
     tag: Tag
+    src_prompt: str = field(init=False)
+    tgt_regex: re.Pattern = field(init=False)
 
     def __post_init__(self):
         self.src_prompt = f"{self.tag.src_start}{{src_text}}{self.tag.src_end}"
-        self.tgt_regex = f"{self.tag.tgt_start}\\s*(.*?)\\s*{self.tag.tgt_end}"
+        self.tgt_regex = re.compile(f"{self.tag.tgt_start}\\s*(.*?)\\s*{self.tag.tgt_end}", re.DOTALL)
         self.task_template = self.task_template.format(src_start=self.tag.src_start,
                                                       src_end=self.tag.src_end,
                                                       tgt_start=self.tag.tgt_start,
@@ -40,6 +42,14 @@ class Template:
     
     def get_src_filled_prompt(self, src_text:str):
         return self.src_prompt.format(src_text=src_text)
+
+    def get_translated_text(self, tgt_text:str):
+        match = self.tgt_regex.search(tgt_text)
+        if match:
+            translated_text = match.group(1)
+        else:
+            translated_text = ""
+        return translated_text
 
 @dataclass
 class SystemPrompt:
