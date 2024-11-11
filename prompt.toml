@@ -27,4 +27,4 @@ tgt_tag_start = "<trans>"  # Start tag for the translated text.
 tgt_tag_end = "</trans>"  # End tag for the translated text.
 
 # Define a regular expression pattern to extract the translated text from the response.
-regex = "{tgt_tag_start}\\s*(.*?)\\s*{tgt_tag_end}"  # Regex pattern to capture the translated text within taranslated section.
+regex_pattern = "{tgt_tag_start}\\s*(.*?)\\s*{tgt_tag_end}"  # Regex pattern to capture the translated text within taranslated section.
