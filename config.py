@@ -3,24 +3,22 @@ import toml
 
 @dataclass
 class OpenAIConfig:
-    def __init__(self, url:str, api_key:str, model:str):
-        self.url = url
-        self.api_key = api_key
-        self.model = model
+    url: str
+    api_key: str
+    model_name: str
     
     @classmethod
     def from_dict(cls, config_dict:dict):
-        return cls(url=config_dict['url'],
+        return cls(url=config_dict['base_url'],
                    api_key=config_dict['api_key'],
-                   model=config_dict['model'])
+                   model_name=config_dict['model_name'])
 
 @dataclass
 class ModelConfig:
-    def __init__(self, temperature:float, max_tokens:int, frequency_penalty:float, presence_penalty:float):
-        self.temperature = temperature
-        self.max_tokens = max_tokens
-        self.frequency_penalty = frequency_penalty
-        self.presence_penalty = presence_penalty
+    temperature: float
+    max_tokens: int
+    frequency_penalty: float
+    presence_penalty: float
 
     @classmethod
     def from_dict(cls, config_dict:dict):
@@ -31,9 +29,8 @@ class ModelConfig:
 
 @dataclass
 class ServerConfig:
-    def __init__(self, host:str, port:int):
-        self.host = host
-        self.port = port
+    host: str
+    port: str
     
     @classmethod
     def from_dict(cls, config_dict:dict):
@@ -43,8 +40,7 @@ class ServerConfig:
 
 @dataclass
 class DatabaseConfig:
-    def __init__(self, db_file:str):
-        self.db_file = db_file
+    db_file: str
     
     @classmethod
     def from_dict(cls, config_dict:dict):
@@ -53,9 +49,8 @@ class DatabaseConfig:
 
 @dataclass
 class LoggingConfig:
-    def __init__(self, log_file:str, log_level:str):
-        self.log_file = log_file
-        self.log_level = log_level
+    log_file: str
+    log_level: str
 
     @classmethod
     def from_dict(cls, config_dict:dict):
@@ -64,12 +59,12 @@ class LoggingConfig:
 
 @dataclass
 class Config:
-    def __init__(self, openai_config:OpenAIConfig, model_config:ModelConfig, server_config:ServerConfig, database_config:DatabaseConfig, logging_config:LoggingConfig):
-        self.OpenAIConfig = openai_config
-        self.ModelConfig = model_config
-        self.ServerConfig = server_config
-        self.DatabaseConfig = database_config
-        self.LoggingConfig = logging_config
+
+    openai_config: OpenAIConfig
+    model_config: ModelConfig
+    server_config: ServerConfig
+    database_config: DatabaseConfig
+    logging_config: LoggingConfig
 
     @classmethod
     def from_toml(cls, config_file:str=r"config.toml"):

@@ -3,13 +3,13 @@
 
 
 # The URL for the OpenAI API.
-url = "https://api.openai.com/v1"
+base_url = "https://api.openai.com/v1"
 
 # Your API key
 api_key = "your_api_key_here"
 
 # model name to use for generating text. Options include 'gpt-3.5-turbo', 'gpt-4', etc.
-model = "gpt-3.5-turbo"
+model_name = "gpt-3.5-turbo"
 
 
 [server]
