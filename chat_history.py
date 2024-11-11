@@ -5,11 +5,13 @@ class ChatHistory:
     chat_history: list = field(default_factory=list)
     system_prompt: str = field(init=False)
     task_prompt: str = field(init=False)
+    src_lang: str = field(default_factory=str)
+    tgt_lang: str = field(default_factory=str)
 
     def reset_history(self, use_system_prompt:bool=True):
         self.chat_history = list()
         if use_system_prompt:
-            self.add_system_message(self.system_prompt)
+            self.add_system_prompt(self.system_prompt)
         self.add_user_content(self.task_prompt)
     
     def add_message(self, role:str, content:str):
