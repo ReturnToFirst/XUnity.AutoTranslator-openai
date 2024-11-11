@@ -26,12 +26,11 @@ class LLMClient:
         system_prompt: str = field(init=False)
         task_prompt: str = field(init=False)
 
-
     def request_completion(self):
         try:
             completion = self.client.chat.completions.create(
                         model=self.config.openai_config.model_name,
-                        messages=self.chat_history,
+                        messages=self.chat_history.chat_history,
                         temperature=self.config.model_config.temperature,
                         frequency_penalty=self.config.model_config.frequency_penalty,
                         presence_penalty=self.config.model_config.presence_penalty
