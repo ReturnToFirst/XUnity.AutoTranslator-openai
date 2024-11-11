@@ -15,7 +15,8 @@ async def translation_handler(to:str, text:str, from_lang: str = Query(..., alia
         client.chat_history.src_lang = from_lang
         client.chat_history.tgt_lang = to
         client.chat_history.reset_history(prompt.system_prompt.use_system_prompt)
-        client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(from_lang, to))
+        if client.prompt.template.specify_language:
+            client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(from_lang, to))
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
     completion_res = client.request_completion()
     client.chat_history.add_assistant_content(completion_res)

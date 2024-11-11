@@ -59,7 +59,9 @@ pip3 install -r requirements.txt
 - [ ] Config
     - [x] Custom url
     - [x] Disable system template
+    - [x] Disable specifying language
     - [ ] Disable history
+
 - [ ] Database
     - [ ] Translation history
 - [ ] API
