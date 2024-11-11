@@ -7,10 +7,10 @@ from dataclasses import dataclass, field
 @dataclass
 class LLMClient:
     config: Config
-    client: OpenAI
+    client: OpenAI = field(init=False)
     prompt: Prompt
-    chat_history: ChatHistory
-
+    chat_history: ChatHistory = field(default_factory=ChatHistory)
+    prompt: Prompt
     @classmethod
     def from_config(cls, config: Config, prompt: Prompt):
        return cls(config=config, prompt=prompt)
