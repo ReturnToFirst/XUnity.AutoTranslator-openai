@@ -9,7 +9,8 @@ This project is compatible with openai API.
 - [Python](https://www.python.org/downloads/) 3.8 or later
 
 ### Dependencies
-- [aiohttp](https://pypi.org/project/aiohttp/)
+- [fastapi](https://pypi.org/project/fastapi/)
+- [uvicorn](https://pypi.org/project/uvicorn/)
 - [openai](https://pypi.org/project/openai/)
 
 You can install requirement with
