@@ -37,6 +37,6 @@ class ChatHistory:
     def add_system_prompt(self, system_prompt:str):
         self.add_message("system", system_prompt)
 
-    def add_assistant_message(self, assistant_content:str):
+    def add_assistant_content(self, assistant_content:str):
         self.chat_history.append({"role": "assistant", "content": assistant_content})
         
