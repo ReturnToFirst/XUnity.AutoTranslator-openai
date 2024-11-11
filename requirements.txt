@@ -1,2 +1,4 @@
-aiohttp
+fastapi
+uvicorn
 openai
+toml
