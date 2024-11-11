@@ -7,6 +7,12 @@ class OpenAIConfig:
         self.url = url
         self.api_key = api_key
         self.model = model
+    
+    @classmethod
+    def from_dict(cls, config_dict:dict):
+        return cls(url=config_dict['url'],
+                   api_key=config_dict['api_key'],
+                   model=config_dict['model'])
 
 @dataclass
 class ModelConfig:
@@ -16,17 +22,33 @@ class ModelConfig:
         self.frequency_penalty = frequency_penalty
         self.presence_penalty = presence_penalty
 
+    @classmethod
+    def from_dict(cls, config_dict:dict):
+        return cls(temperature=config_dict['temperature'],
+                   max_tokens=config_dict['max_tokens'],
+                   frequency_penalty=config_dict['frequency_penalty'],
+                   presence_penalty=config_dict['presence_penalty'])
+
 @dataclass
 class ServerConfig:
     def __init__(self, host:str, port:int):
         self.host = host
         self.port = port
+    
+    @classmethod
+    def from_dict(cls, config_dict:dict):
+        return cls(host=config_dict['host'],
+                   port=config_dict['port'])
 
 
 @dataclass
 class DatabaseConfig:
     def __init__(self, db_file:str):
         self.db_file = db_file
+    
+    @classmethod
+    def from_dict(cls, config_dict:dict):
+        return cls(db_file=config_dict['db_file'])
 
 
 @dataclass
@@ -34,6 +56,11 @@ class LoggingConfig:
     def __init__(self, log_file:str, log_level:str):
         self.log_file = log_file
         self.log_level = log_level
+
+    @classmethod
+    def from_dict(cls, config_dict:dict):
+        return cls(log_file=config_dict['log_file'],
+                   log_level=config_dict['log_level'])
 
 @dataclass
 class Config:
@@ -58,8 +85,8 @@ class Config:
         database_config = config_dict['database']
         logging_config = config_dict['logging']
         
-        return cls(OpenAIConfig(openai_config['url'], openai_config['api_key'], openai_config['model']),
-                   ModelConfig(model_config['temperature'], model_config['max_tokens'], model_config['frequency_penalty'], model_config['presence_penalty']),
-                   ServerConfig(server_config['host'], server_config['port']),
-                   DatabaseConfig(database_config['db_file']),
-                   LoggingConfig(logging_config['log_file'], logging_config['log_level']))
+        return cls(OpenAIConfig.from_dict(openai_config),
+                   ModelConfig.from_dict(model_config),
+                   ServerConfig.from_dict(server_config),
+                   DatabaseConfig.from_dict(database_config),
+                   LoggingConfig.from_dict(logging_config))
