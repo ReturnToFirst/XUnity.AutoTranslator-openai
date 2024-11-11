@@ -43,6 +43,13 @@ pip3 install -r requirements.txt
     - [x] Model
 - [ ] Docs
     - [ ] Installation
+    - [ ] Requirements
     - [ ] Usage
     - [ ] Configuration
 - [ ] refactor
+    - [x] History
+    - [x] Template
+    - [x] Completion request
+    - [x] Config
+    - [ ] Main
+    - [ ] Server
