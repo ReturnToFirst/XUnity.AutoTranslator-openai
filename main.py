@@ -34,9 +34,9 @@ async def translation_handler(
         str: The translated text.
     """
     if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != src_lang or client.chat_history.tgt_lang != tgt_lang:
-        client.chat_history.set_src_lang = src_lang
-        client.chat_history.set_tgt_lang = tgt_lang
-        client.chat_history.reset_history(prompt.system_prompt.use_system_prompt)
+        client.reset_history()
+        client.chat_history.set_src_lang(src_lang)
+        client.chat_history.set_tgt_lang(tgt_lang)
         if client.prompt.template.specify_language:
             client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(src_lang, tgt_lang))
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
