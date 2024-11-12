@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Query
+from fastapi.responses import PlainTextResponse
 import uvicorn
 from prompt import Prompt
 from config import Config
@@ -10,7 +11,7 @@ config = Config.from_toml("config.toml")
 prompt = Prompt.from_toml("prompt.toml")
 client = LLMClient.from_config(config, prompt)
 
-@proxy_server.get("/translate")
+@proxy_server.get("/translate", response_class=PlainTextResponse)
 async def translation_handler(
     to: str,
     text: str,
