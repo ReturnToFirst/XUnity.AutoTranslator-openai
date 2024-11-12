@@ -7,25 +7,30 @@ class DB:
     cursor: sqlite3.Cursor
 
     @classmethod
-    def from_file(cls,db_file: str):
-        return cls(sqlite3.connect(db_file), sqlite3.connect(db_file).cursor())
+    def from_file(cls, db_file: str):
+        connector = sqlite3.connect(db_file)
+        cursor = connector.cursor()
+
+        if "translations" not in cls.get_table_list(cursor):
+            cls.init_table(cursor)
+
+        return cls(connector, cursor)
         
+    @classmethod
+    def get_table_list(cls, cursor: sqlite3.Cursor) -> list:
+        cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'")
+        return [t[0] for t in cursor.fetchall()]
 
-    def get_table_list(self):
-        query = self.cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'")
-        result = query.fetchone()
-        return () if not result else result
-
-    def init_table(self):
-        if not "translations" in self.get_table_list():
-            self.cursor.execute("""CREATE TABLE translations (
+    @classmethod
+    def init_table(cls, cursor: sqlite3.Cursor):
+        cursor.execute("""CREATE TABLE translations (
                         src_lang TEXT,
                         tgt_lang TEXT,
                         src_text TEXT,
                         tgt_text TEXT)""")
-            self.connector.commit()
+        cursor.connection.commit()
         
-    def add_translation(self, src_lang:str, tgt_lang:str, src_text:str, tgt_text:str):
+    def save_translation(self, src_lang:str, tgt_lang:str, src_text:str, tgt_text:str):
         self.cursor.execute("INSERT INTO translations VALUES (?,?,?,?)", (src_lang, tgt_lang, src_text, tgt_text))
         self.connector.commit()
 
