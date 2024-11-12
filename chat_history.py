@@ -38,7 +38,13 @@ class ChatHistory:
 
     def set_task_prompt(self, task_prompt: str):
         self.task_prompt = task_prompt
+    
+    def set_src_lang(self, src_lang: str):
+        self.src_lang = src_lang
 
+    def set_tgt_lang(self, tgt_lang: str):
+        self.tgt_lang = tgt_lang
+        
     def add_user_content(self, user_content: str):
         self.add_message("user", user_content)
 
