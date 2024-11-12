@@ -60,13 +60,12 @@ pip3 install -r requirements.txt
     - [x] Custom url
     - [x] Disable system template
     - [x] Disable specifying language
-    - [ ] Disable history
-
-- [ ] Database
+    - [x] Disable history
+- [x] Database
     - [x] Translation caching
-- [ ] API
-    - [ ] Translation
-    - [ ] Reset
+- [x] API
+    - [x] Translation
+    - [x] Reset
 - [ ] UI
     - [ ] WebUI
         - [ ] Control configs
