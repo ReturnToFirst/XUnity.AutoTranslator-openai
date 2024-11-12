@@ -10,7 +10,7 @@ class Tag:
     tgt_end: str
 
     @classmethod
-    def from_dict(cls, config_dict:dict):
+    def from_dict(cls, config_dict: dict):
         return cls(src_start=config_dict['src_start'],
                    src_end=config_dict['src_end'],
                    tgt_start=config_dict['tgt_start'],
@@ -34,24 +34,19 @@ class Template:
                                                       tgt_end=self.tag.tgt_end)
 
     @classmethod
-    def from_dict(cls, config_dict:dict):
+    def from_dict(cls, config_dict: dict):
         return cls(task_template=config_dict['task_template'],
                    specify_language=config_dict['specify_language'],
                    language_template=config_dict['language_template'],
                    tag=Tag.from_dict(config_dict['tag']))
     
-    def get_src_filled_prompt(self, src_text:str):
+    def get_src_filled_prompt(self, src_text: str):
         return self.src_prompt.format(src_text=src_text)
 
-    def get_translated_text(self, tgt_text:str):
+    def get_translated_text(self, tgt_text: str):
         match = self.tgt_regex.search(tgt_text)
-        if match:
-            translated_text = match.group(1)
-        else:
-            translated_text = ""
-        return translated_text
-    
-    def get_language_target_prompt(self, src_lang:str, tgt_lang:str):
+        return match.group(1) if match else ""
+    def get_language_target_prompt(self, src_lang: str, tgt_lang: str):
         return self.language_template.format(src_lang=src_lang, tgt_lang=tgt_lang)
 
 @dataclass
@@ -60,7 +55,7 @@ class SystemPrompt:
     system_prompt: str
 
     @classmethod
-    def from_dict(cls, config_dict:dict):
+    def from_dict(cls, config_dict: dict):
         return cls(use_system_prompt=config_dict['use_system_prompt'],
                    system_prompt=config_dict['system_prompt'])
 
@@ -70,7 +65,7 @@ class Prompt:
     system_prompt: SystemPrompt
 
     @classmethod
-    def from_toml(cls, prompt_file: str = r"prompt.toml"):
+    def from_toml(cls, prompt_file: str = "prompt.toml"):
         try:
             config_dict = toml.load(prompt_file)
         except Exception as e:
