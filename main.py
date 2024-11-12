@@ -8,9 +8,11 @@ from openai_client import LLMClient
 proxy_server = FastAPI()
 config = Config.from_toml("config.toml")
 prompt = Prompt.from_toml("prompt.toml")
+client = LLMClient.from_config(config, prompt)
+
 
 @proxy_server.get("/translate")
-async def translation_handler(to:str, text:str, from_lang: str = Query(..., alias="from")):
+async def translation_handler(to: str, text: str, from_lang: str = Query(..., alias="from")):
     if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != from_lang or client.chat_history.tgt_lang != to:
         client.chat_history.src_lang = from_lang
         client.chat_history.tgt_lang = to
@@ -23,14 +25,17 @@ async def translation_handler(to:str, text:str, from_lang: str = Query(..., alia
     translated_text = client.prompt.template.get_translated_text(completion_res)
     return translated_text
 
+
 @proxy_server.get("/reset")
 async def reset_handler():
+    client.chat_history.reset_history(prompt.system_prompt.use_system_prompt)
     return "Reset successful"
+
 
 @proxy_server.get("/status")
 async def status_handler():
     return "Server is running"
 
+
 if __name__ == "__main__":
-    client = LLMClient.from_config(config, prompt)
     uvicorn.run(proxy_server)
