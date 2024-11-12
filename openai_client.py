@@ -10,7 +10,6 @@ class LLMClient:
     client: OpenAI = field(init=False)
     prompt: Prompt
     chat_history: ChatHistory = field(default_factory=ChatHistory)
-    prompt: Prompt
     @classmethod
     def from_config(cls, config: Config, prompt: Prompt):
        return cls(config=config, prompt=prompt)
@@ -21,11 +20,6 @@ class LLMClient:
         self.chat_history.set_system_prompt(self.prompt.system_prompt.system_prompt)
         self.chat_history.set_task_prompt(self.prompt.template.task_template)
 
-    @dataclass
-    class Prompt:
-        system_prompt: str = field(init=False)
-        task_prompt: str = field(init=False)
-
     def request_completion(self):
         try:
             completion = self.client.chat.completions.create(
@@ -35,11 +29,15 @@ class LLMClient:
                         frequency_penalty=self.config.model_config.frequency_penalty,
                         presence_penalty=self.config.model_config.presence_penalty
                         )
-
         except Exception as e:
-            print(f"Error in OpenAI completion. Error : {e}")
+            print(f"Error in OpenAI completion. Error: {e}")
             return e
         return completion.choices[0].message.content
 
     def reset_history(self):
         self.chat_history.reset_history()
+
+@dataclass
+class Prompt:
+    system_prompt: str
+    task_prompt: str
