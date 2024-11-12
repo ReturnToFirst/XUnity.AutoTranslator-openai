@@ -7,19 +7,15 @@ class ChatHistory:
     
     Attributes:
     - chat_history (list): A list of dictionaries where each dictionary represents a message in the chat history.
-    - system_prompt (str): A string representing the system prompt.
-    - task_prompt (str): A string representing the task prompt.
     - src_lang (str): A string representing the source language.
     - tgt_lang (str): A string representing the target language.
     """
 
     chat_history: list = field(default_factory=list)
-    system_prompt: str = field(default='')
-    task_prompt: str = field(default='')
     src_lang: str = field(default='')
     tgt_lang: str = field(default='')
 
-    def reset_history(self, use_system_prompt: bool = True):
+    def reset_history(self):
         self.chat_history = []
     
     def add_message(self, role: str, content: str):
@@ -44,7 +40,7 @@ class ChatHistory:
 
     def set_tgt_lang(self, tgt_lang: str):
         self.tgt_lang = tgt_lang
-        
+
     def add_user_content(self, user_content: str):
         self.add_message("user", user_content)
 
