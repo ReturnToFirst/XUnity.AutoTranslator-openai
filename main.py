@@ -46,10 +46,10 @@ async def translation_handler(
     completion_res = client.request_completion()
     if client.config.history_config.use_history:
         if client.config.history_config.max_history > -1 :
-            if len(client.chat_history.chat_history) >= client.config.history_config.max_history:
-                [client.chat_history.delete_latest_turn() for _ in range(2)]
-            else:
+            if len(client.chat_history.chat_history) < client.config.history_config.max_history:
                 client.chat_history.add_assistant_content(completion_res)
+            else:
+                [client.chat_history.delete_latest_turn() for _ in range(2)]
         else:
             client.chat_history.add_assistant_content(completion_res)
     else:
