@@ -33,7 +33,6 @@ class ChatHistory:
         self.chat_history.reverse()
         self.chat_history = self.chat_history[turns+1:]
         self.chat_history.reverse()
-        print(self.chat_history)
         
     def set_system_prompt(self, system_prompt: str):
         self.system_prompt = system_prompt
