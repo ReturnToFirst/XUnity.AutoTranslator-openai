@@ -28,7 +28,7 @@ async def translation_handler(
     Args:
         to (str): The target language code.
         text (str): The text to be translated.
-        from_lang (str): The source language code.
+        from (str): The source language code.
 
     Returns:
         str: The translated text.
@@ -43,7 +43,7 @@ async def translation_handler(
     completion_res = client.request_completion()
     client.chat_history.add_assistant_content(completion_res)
     translated_text = client.prompt.template.get_translated_text(completion_res)
-    print(f"Original: {text}, Translated: {translated_text}")
+    print(f"Original: {text}\nTranslated: {translated_text}")
     return translated_text
 
 
