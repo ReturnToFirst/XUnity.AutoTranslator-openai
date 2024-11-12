@@ -39,7 +39,7 @@ async def translation_handler(
         client.reset_history()
         client.set_language_targets(src_lang, tgt_lang)
     if client.config.database_config.use_cached_translation:
-        translated_text = db.fetch_translation(text, src_lang, tgt_lang)
+        translated_text = db.fetch_translation(src_lang, tgt_lang, text)
         if translated_text:
             return translated_text
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
