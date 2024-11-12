@@ -37,23 +37,28 @@ async def translation_handler(
     """
     if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != src_lang or client.chat_history.tgt_lang != tgt_lang:
         client.reset_history()
-        client.chat_history.set_src_lang(src_lang)
-        client.chat_history.set_tgt_lang(tgt_lang)
-        if client.prompt.template.specify_language:
-            client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(src_lang, tgt_lang))
-    client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
-    if config.database_config.use_cached_translation:
+        client.set_language_targets(src_lang, tgt_lang)
+    if client.config.database_config.use_cached_translation:
         translated_text = db.fetch_translation(text, src_lang, tgt_lang)
         if translated_text:
             return translated_text
+    client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
     completion_res = client.request_completion()
-    client.chat_history.add_assistant_content(completion_res)
+    if client.config.history_config.use_history:
+        if client.config.history_config.max_history > -1 :
+            if len(client.chat_history.chat_history) >= client.config.history_config.max_history:
+                [client.chat_history.delete_latest_turn() for _ in range(2)]
+            else:
+                client.chat_history.add_assistant_content(completion_res)
+        else:
+            client.chat_history.add_assistant_content(completion_res)
+    else:
+        client.set_language_targets("","")
     translated_text = client.prompt.template.get_translated_text(completion_res)
-    if config.database_config.cache_translation:
+    if client.config.database_config.cache_translation:
         db.save_translation(src_lang, tgt_lang, text, translated_text)
     print(f"Original: {text}\nTranslated: {translated_text}")
     return translated_text
-
 
 @proxy_server.get("/reset")
 async def reset_handler():

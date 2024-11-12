@@ -74,6 +74,12 @@ class LLMClient:
         self.chat_history.set_src_lang("")
         self.chat_history.set_tgt_lang("")
 
+    def set_language_targets(self, src_lang: str, tgt_lang: str):
+        self.chat_history.set_src_lang(src_lang)
+        self.chat_history.set_tgt_lang(tgt_lang)
+        if self.prompt.template.specify_language:
+            self.chat_history.add_user_content(self.prompt.template.get_language_target_prompt(src_lang, tgt_lang))
+
 @dataclass
 class Prompt:
     system_prompt: str
