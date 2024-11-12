@@ -2,6 +2,17 @@ from dataclasses import dataclass, field
 
 @dataclass
 class ChatHistory:
+    """
+    A dataclass to store the chat history along with system and task prompts, and source and target languages.
+    
+    Attributes:
+    - chat_history (list): A list of dictionaries where each dictionary represents a message in the chat history.
+    - system_prompt (str): A string representing the system prompt.
+    - task_prompt (str): A string representing the task prompt.
+    - src_lang (str): A string representing the source language.
+    - tgt_lang (str): A string representing the target language.
+    """
+
     chat_history: list = field(default_factory=list)
     system_prompt: str = field(default='')
     task_prompt: str = field(default='')
@@ -13,12 +24,14 @@ class ChatHistory:
         if use_system_prompt:
             self.add_system_prompt(self.system_prompt)
         self.add_user_content(self.task_prompt)
+        self.src_lang = ""
+        self.tgt_lang = ""
     
     def add_message(self, role: str, content: str):
         if self.chat_history:
             latest_message = self.chat_history.pop()
             if latest_message["role"] == role:
-                self.chat_history.append({"role": role, "content": f"{latest_message['content']}\n\n{content}"})
+                self.chat_history.append({"role": role, "content": f"{latest_message['content']}\n{content}"})
             else:
                 self.chat_history.append(latest_message)
                 self.chat_history.append({"role": role, "content": content})
