@@ -13,9 +13,9 @@ client = LLMClient.from_config(config, prompt)
 
 @proxy_server.get("/translate", response_class=PlainTextResponse)
 async def translation_handler(
-    to: str,
     text: str,
-    from_lang: str = Query(..., alias="from")
+    tgt_lang: str = Query(..., alias="to"),
+    src_lang: str = Query(..., alias="from")
 ):
     """
     Handle translation requests between specified languages.
@@ -33,12 +33,12 @@ async def translation_handler(
     Returns:
         str: The translated text.
     """
-    if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != from_lang or client.chat_history.tgt_lang != to:
-        client.chat_history.src_lang = from_lang
-        client.chat_history.tgt_lang = to
+    if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != src_lang or client.chat_history.tgt_lang != tgt_lang:
+        client.chat_history.set_src_lang = src_lang
+        client.chat_history.set_tgt_lang = tgt_lang
         client.chat_history.reset_history(prompt.system_prompt.use_system_prompt)
         if client.prompt.template.specify_language:
-            client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(from_lang, to))
+            client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(src_lang, tgt_lang))
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
     completion_res = client.request_completion()
     client.chat_history.add_assistant_content(completion_res)
