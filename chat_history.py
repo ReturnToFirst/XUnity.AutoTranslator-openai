@@ -21,11 +21,6 @@ class ChatHistory:
 
     def reset_history(self, use_system_prompt: bool = True):
         self.chat_history = []
-        if use_system_prompt:
-            self.add_system_prompt(self.system_prompt)
-        self.add_user_content(self.task_prompt)
-        self.src_lang = ""
-        self.tgt_lang = ""
     
     def add_message(self, role: str, content: str):
         if self.chat_history:
