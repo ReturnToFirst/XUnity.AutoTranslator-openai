@@ -89,7 +89,14 @@ class DatabaseConfig:
         """
         return cls(**config_dict)
 
+@dataclass
+class HistoryConfig:
+    use_history: bool
+    max_history: int
 
+    @classmethod
+    def from_dict(cls, config_dict: dict):
+        return cls(**config_dict)
 @dataclass
 class LoggingConfig:
     """
@@ -122,6 +129,7 @@ class Config:
     openai_config: OpenAIConfig
     model_config: ModelConfig
     server_config: ServerConfig
+    history_config: HistoryConfig
     database_config: DatabaseConfig
     logging_config: LoggingConfig
 
@@ -148,6 +156,7 @@ class Config:
             openai_config=OpenAIConfig.from_dict(config_dict['openai']),
             model_config=ModelConfig.from_dict(config_dict['model']),
             server_config=ServerConfig.from_dict(config_dict['server']),
+            history_config=HistoryConfig.from_dict(config_dict['history']),
             database_config=DatabaseConfig.from_dict(config_dict['database']),
             logging_config=LoggingConfig.from_dict(config_dict['logging']),
         )

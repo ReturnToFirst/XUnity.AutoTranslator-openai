@@ -32,6 +32,9 @@ db_file = "translated_texts.db" # database file name
 cache_translation = true
 use_cached_translation = true
 
+[history]
+use_history = false
+max_history = 200
 
 [logging]
 # The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
