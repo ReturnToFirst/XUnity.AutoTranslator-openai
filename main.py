@@ -58,7 +58,7 @@ async def reset_handler():
     Returns:
         str: A success message indicating that the reset was successful.
     """
-    client.chat_history.reset_history(prompt.system_prompt.use_system_prompt)
+    client.reset_history()
     return "Reset successful"
 
 
