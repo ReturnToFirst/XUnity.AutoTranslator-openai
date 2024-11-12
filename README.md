@@ -63,7 +63,7 @@ pip3 install -r requirements.txt
     - [ ] Disable history
 
 - [ ] Database
-    - [ ] Translation history
+    - [x] Translation caching
 - [ ] API
     - [ ] Translation
     - [ ] Reset
