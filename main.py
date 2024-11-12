@@ -4,12 +4,14 @@ import uvicorn
 from prompt import Prompt
 from config import Config
 from openai_client import LLMClient
+from db import DB
 
 
 proxy_server = FastAPI()
 config = Config.from_toml("config.toml")
 prompt = Prompt.from_toml("prompt.toml")
 client = LLMClient.from_config(config, prompt)
+db = DB.from_file(config.database_config.db_file)
 
 @proxy_server.get("/translate", response_class=PlainTextResponse)
 async def translation_handler(
@@ -40,9 +42,15 @@ async def translation_handler(
         if client.prompt.template.specify_language:
             client.chat_history.add_user_content(client.prompt.template.get_language_target_prompt(src_lang, tgt_lang))
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
+    if config.database_config.use_cached_translation:
+        translated_text = db.fetch_translation(text, src_lang, tgt_lang)
+        if translated_text:
+            return translated_text
     completion_res = client.request_completion()
     client.chat_history.add_assistant_content(completion_res)
     translated_text = client.prompt.template.get_translated_text(completion_res)
+    if config.database_config.cache_translation:
+        db.save_translation(src_lang, tgt_lang, text, translated_text)
     print(f"Original: {text}\nTranslated: {translated_text}")
     return translated_text
 

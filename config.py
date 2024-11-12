@@ -74,6 +74,8 @@ class ServerConfig:
 class DatabaseConfig:
     """Dataclass to store the configuration for the database, including the file path."""
     db_file: str
+    cache_translation: bool
+    use_cached_translation: bool
     
     @classmethod
     def from_dict(cls, config_dict: dict):

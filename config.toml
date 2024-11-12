@@ -29,6 +29,10 @@ port = 5000
 # The name of the database file.
 db_file = "translated_texts.db" # database file name
 
+cache_translation = true
+use_cached_translation = true
+
+
 [logging]
 # The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
 log_level = "INFO"
