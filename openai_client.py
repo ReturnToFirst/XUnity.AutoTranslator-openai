@@ -67,7 +67,7 @@ class LLMClient:
         """
         Resets the chat history.
         """
-        self.chat_history.reset_history()
+        self.chat_history.reset_history(use_system_prompt=self.prompt.system_prompt.use_system_prompt)
 
 @dataclass
 class Prompt:
