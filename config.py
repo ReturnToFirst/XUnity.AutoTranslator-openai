@@ -142,7 +142,6 @@ class Config:
         except Exception as e:
             print(f"Error loading config file: {e}")
             raise
-        print(config_dict)
         return cls(
             openai_config=OpenAIConfig.from_dict(config_dict['openai']),
             model_config=ModelConfig.from_dict(config_dict['model']),
