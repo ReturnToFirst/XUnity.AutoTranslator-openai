@@ -28,7 +28,10 @@ class ChatHistory:
                 self.chat_history.append({"role": role, "content": content})
         else:
             self.chat_history.append({"role": role, "content": content})
-
+    
+    def delete_latest_turn(self):
+        self.chat_history.pop()
+        
     def set_system_prompt(self, system_prompt: str):
         self.system_prompt = system_prompt
 
