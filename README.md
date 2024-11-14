@@ -52,17 +52,16 @@ pip3 install -r requirements.txt
     - [x] Template
     - [x] Completion request
     - [x] Config
-    - [x] Main
+    - [ ] Main
     - [ ] Server
     - [ ] Logger
     - [ ] Error handling
-- [ ] Config
-    - [x] Custom url
-    - [x] Disable system template
-    - [x] Disable specifying language
-    - [x] Disable history
 - [x] Database
     - [x] Translation caching
+    - [x] Use cached translation
+- [x] Context-Aware Translation
+    - [x] Use first history
+    - [x] Use latest history
 - [x] API
     - [x] Translation
     - [x] Reset
