@@ -42,6 +42,7 @@ async def translation_handler(
     if client.config.database_config.use_cached_translation:
         translated_text = db.fetch_translation(src_lang, tgt_lang, text)
         if translated_text:
+            print("Got cached translation!")
             completion_res = f"{client.prompt.template.tag.tgt_start}{translated_text}{client.prompt.template.tag.tgt_end}"
         else:
             completion_res = client.request_completion()
@@ -57,7 +58,6 @@ async def translation_handler(
                         client.chat_history.add_message(turn['role'], turn['content'])
                 else:
                     client.chat_history.delete_latest_turns(2)
-        print("current history", client.chat_history.chat_history)
     else:
         client.set_language_targets("","")
     translated_text = client.prompt.template.get_translated_text(completion_res)
