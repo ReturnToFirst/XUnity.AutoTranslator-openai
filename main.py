@@ -38,20 +38,26 @@ async def translation_handler(
     if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != src_lang or client.chat_history.tgt_lang != tgt_lang:
         client.reset_history()
         client.set_language_targets(src_lang, tgt_lang)
+    client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
     if client.config.database_config.use_cached_translation:
         translated_text = db.fetch_translation(src_lang, tgt_lang, text)
         if translated_text:
-            return translated_text
-    client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
-    completion_res = client.request_completion()
-    if client.config.history_config.use_history:
-        if client.config.history_config.max_history > -1 :
-            if len(client.chat_history.chat_history) < client.config.history_config.max_history:
-                client.chat_history.add_assistant_content(completion_res)
-            else:
-                client.chat_history.delete_latest_turns(2)
+            completion_res = f"{client.prompt.template.tag.tgt_start}{translated_text}{client.prompt.template.tag.tgt_end}"
         else:
-            client.chat_history.add_assistant_content(completion_res)
+            completion_res = client.request_completion()
+    if client.config.history_config.use_history:
+        client.chat_history.add_assistant_content(completion_res)
+        if client.config.history_config.max_history > -1 :
+            if len(client.chat_history.chat_history)-(1+(1 if client.prompt.system_prompt.use_system_prompt else 0)) >= client.config.history_config.max_history:
+                if client.config.history_config.use_latest_history:
+                    chat_history = client.chat_history.chat_history[2+(1 if client.prompt.system_prompt.use_system_prompt else 0):]
+                    client.reset_history()         
+                    client.set_language_targets(src_lang, tgt_lang)
+                    for turn in chat_history:
+                        client.chat_history.add_message(turn['role'], turn['content'])
+                else:
+                    client.chat_history.delete_latest_turns(2)
+        print("current history", client.chat_history.chat_history)
     else:
         client.set_language_targets("","")
     translated_text = client.prompt.template.get_translated_text(completion_res)
