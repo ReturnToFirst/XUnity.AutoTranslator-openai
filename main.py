@@ -52,7 +52,7 @@ async def translation_handler(
             if len(client.chat_history.chat_history)-(1+(1 if client.prompt.system_prompt.use_system_prompt else 0)) >= client.config.history_config.max_history:
                 if client.config.history_config.use_latest_history:
                     chat_history = client.chat_history.chat_history[2+(1 if client.prompt.system_prompt.use_system_prompt else 0):]
-                    client.reset_history()         
+                    client.reset_history()
                     client.set_language_targets(src_lang, tgt_lang)
                     for turn in chat_history:
                         client.chat_history.add_message(turn['role'], turn['content'])
@@ -62,7 +62,8 @@ async def translation_handler(
         client.set_language_targets("","")
     translated_text = client.prompt.template.get_translated_text(completion_res)
     if client.config.database_config.cache_translation:
-        db.save_translation(src_lang, tgt_lang, text, translated_text)
+        if not db.fetch_translation(src_lang, tgt_lang, text):
+            db.save_translation(src_lang, tgt_lang, text, translated_text)
     print(f"Original: {text}\nTranslated: {translated_text}")
     return translated_text
 
