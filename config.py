@@ -93,6 +93,7 @@ class DatabaseConfig:
 class HistoryConfig:
     use_history: bool
     max_history: int
+    use_latest_history: bool
 
     @classmethod
     def from_dict(cls, config_dict: dict):

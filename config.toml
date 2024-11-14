@@ -35,7 +35,8 @@ use_cached_translation = true
 
 [history]
 use_history = true
-max_history = 10
+use_latest_history = true
+max_history = 30
 
 [logging]
 # The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
@@ -51,7 +52,7 @@ log_file = "app.log"
 
 
 # The temperature controls the randomness of the output. Lower values make the output more deterministic.
-temperature = 0.3
+temperature = 0.0
 
 # The maximum number of tokens to generate in the output.
 max_tokens = 2048
