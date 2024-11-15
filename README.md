@@ -22,7 +22,7 @@ pip3 install -r requirements.txt
 1. Install Dependencies
 2. Configure the provider in XUnity.AutoTranslator:
     1. Change Provider to 'CustomTranslate' in [Service] section.
-        ```toml
+        ```
             [Service]
             Endpoint=CustomTranslate
         ```
@@ -39,11 +39,13 @@ pip3 install -r requirements.txt
 ## Features
 ### Translation Provider
 - CustomTranslate Endpoint: Integrate with XUnity.AutoTranslator using a custom endpoint that leverages OpenAI's translation capabilities.
+
 ### Advanced Translation Features
 - Translation Caching: Store translated text in a local database to avoid redundant API calls and improve performance.
 - Context-Aware Translation: Use previous and latest chat history to provide more contextually accurate translations.
 - Configurable Prompts: Customize the system and task prompts used in translation requests via configuration files.
 - Supported Languages: Support for multiple source and target languages that LLMs can handle.
+
 ### API Endpoints
 - Translation: Perform translation using OpenAI's API.
     - Endpoint: /translate
@@ -56,7 +58,7 @@ pip3 install -r requirements.txt
     - Method: GET
     - Description: Clears the current chat history.
 
-TODO
+## TODO
 - [ ] Docs
     - [ ] Installation
     - [ ] Requirements
