@@ -38,6 +38,11 @@ async def translation_handler(
     if "" in [client.chat_history.src_lang, client.chat_history.tgt_lang] or client.chat_history.src_lang != src_lang or client.chat_history.tgt_lang != tgt_lang:
         client.reset_history()
         client.set_language_targets(src_lang, tgt_lang)
+        if client.config.database_config.use_latest_records:
+            translation_records = db.get_latest_translations(src_lang, tgt_lang, client.config.database_config.init_latest_records)
+            if translation_records:
+                client.apply_latest_translations(translation_records)
+                print("Latest translation Applied.")
     client.chat_history.add_user_content(client.prompt.template.get_src_filled_prompt(text))
     if client.config.database_config.use_cached_translation:
         translated_text = db.fetch_translation(src_lang, tgt_lang, text)
