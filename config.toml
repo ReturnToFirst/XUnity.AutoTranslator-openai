@@ -32,6 +32,8 @@ db_file = "translated_texts.db" # database file name
 
 cache_translation = true
 use_cached_translation = true
+use_latest_records = true
+init_latest_records = 30
 
 [history]
 use_history = true

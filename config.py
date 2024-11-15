@@ -76,7 +76,9 @@ class DatabaseConfig:
     db_file: str
     cache_translation: bool
     use_cached_translation: bool
-    
+    use_latest_records: bool
+    init_latest_records: int
+
     @classmethod
     def from_dict(cls, config_dict: dict):
         """Create a DatabaseConfig instance from dictionary.
