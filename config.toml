@@ -2,13 +2,13 @@
 ## Configuration section for interacting with the OpenAI API.
 
 # Base URL for making API requests to OpenAI.
-base_url = "https://api.openai.com/v1"
+base_url = "http://127.0.0.1:11434/v1"
 
 # API key for authentication when using the OpenAI API.
-api_key = "your_api_key_here"
+api_key = "ollama"
 
 # Model name used for generating text. Options include 'gpt-3.5-turbo', 'gpt-4', etc.
-model_name = "gpt-3.5-turbo"
+model_name = "aya-expanse:8b"
 
 
 [server]
