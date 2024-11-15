@@ -51,6 +51,8 @@ async def translation_handler(
             completion_res = f"{client.prompt.template.tag.tgt_start}{translated_text}{client.prompt.template.tag.tgt_end}"
         else:
             completion_res = client.request_completion()
+    else:
+        completion_res = client.request_completion()
     if client.config.history_config.use_history:
         client.chat_history.add_assistant_content(completion_res)
         if client.config.history_config.max_history > -1 :
