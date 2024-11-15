@@ -43,10 +43,11 @@ class DB:
         self.cursor.execute("DELETE FROM translations WHERE src_lang=? AND tgt_lang=? AND src_text=?", (src_lang, tgt_lang, src_text))
         self.connector.commit()
 
-    def get_latest_translation(self, index: int):
-        self.cursor.execute(f"SELECT * FROM translations ORDER BY rowid desc LIMIT {index}")
-        result = self.cursor.fetchall()
-        return [TranslationRecord(single_result[0], single_result[1], single_result[2], single_result[3]) for single_result in result]
+    def get_latest_translations(self, src_lang: str, tgt_lang: str, index: int):
+        self.cursor.execute(f"SELECT * FROM translations WHERE src_lang=? AND tgt_lang=? ORDER BY rowid desc LIMIT {index}", (src_lang, tgt_lang))
+        records = self.cursor.fetchall()
+        return [TranslationRecord(record[0], record[1], record[2], record[3]) for record in records]
+
 @dataclass
 class TranslationRecord:
     src_lang: str

@@ -2,6 +2,7 @@ from openai import OpenAI
 from config import Config
 from prompt import Prompt
 from chat_history import ChatHistory
+from db import TranslationRecord
 from dataclasses import dataclass, field
 
 @dataclass
@@ -73,6 +74,12 @@ class LLMClient:
         self.chat_history.add_user_content(self.prompt.template.task_template)
         self.chat_history.set_src_lang("")
         self.chat_history.set_tgt_lang("")
+
+    def apply_latest_translations(self, records: list[TranslationRecord]):
+        records.reverse()
+        for record in records:
+            self.chat_history.add_user_content(record.src_text)
+            self.chat_history.add_assistant_content(record.tgt_text) 
 
     def set_language_targets(self, src_lang: str, tgt_lang: str):
         self.chat_history.set_src_lang(src_lang)
