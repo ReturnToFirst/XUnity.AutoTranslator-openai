@@ -1,71 +1,86 @@
 [openai]
-# This section contains configuration for interacting with the OpenAI API.
+## Configuration section for interacting with the OpenAI API.
 
-
-# The URL for the OpenAI API.
+# Base URL for making API requests to OpenAI.
 base_url = "https://api.openai.com/v1"
 
-# Your API key
+# API key for authentication when using the OpenAI API.
 api_key = "your_api_key_here"
 
-# model name to use for generating text. Options include 'gpt-3.5-turbo', 'gpt-4', etc.
+# Model name used for generating text. Options include 'gpt-3.5-turbo', 'gpt-4', etc.
 model_name = "gpt-3.5-turbo"
 
 
-
 [server]
-## Server configuration
-# This section contains configuration for the server.
+## Configuration section for the server.
 
-# The host on which the server will listen for incoming requests.
+# Host address where the server will listen for incoming requests.
 host = "0.0.0.0"
 
-# The port on which the server will listen for incoming requests.
+# Port number on which the server will listen for incoming requests.
 port = 5000
 
+
 [database]
-# This section contains configuration for the database.
-# database will cache already translated text.
+## Configuration section for the database.
+## The database is used to cache translated text.
 
-# The name of the database file.
-db_file = "translated_texts.db" # database file name
+# Name of the database file where translated texts are stored.
+db_file = "translated_texts.db"
 
+# If true, save each translation to the database for future requests.
 cache_translation = true
+
+# If true, use a cached translation from the database if it exists.
 use_cached_translation = true
+
+# If true, use the latest records to initialize the prompt.
 use_latest_records = true
+
+# Number of latest records to use for initializing the prompt.
 init_latest_records = 30
 
+
 [history]
+## Context-Aware Translation configuration.
+## This configuration helps maintain context for more natural translations.
+
+# If true, use context-aware translation.
 use_history = true
-use_latest_history = true
+
+# Maximum number of history items to save in the prompt.
+# If -1, all history is saved in the prompt.
 max_history = 30
 
+# If true, use the latest history for the prompt. This may slow response times but improve translation quality.
+use_latest_history = true
+
+
 [logging]
-# The level of logging to use. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
+## Configuration section for logging.
+
+## Log level to use for logging. Options include 'DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'.
 log_level = "INFO"
 
-# The file to which logs will be written.
+# File path where logs will be written.
 log_file = "app.log"
 
 
 [model]
-# Model parameters
+## Model parameters configuration.
 ## This section contains parameters for the model used for generating text.
 
-
-# The temperature controls the randomness of the output. Lower values make the output more deterministic.
+# Temperature controls the randomness of the output. Lower values make the output more deterministic.
+# On translation tasks, a value of 0 is highly recommended.
 temperature = 0.0
 
-# The maximum number of tokens to generate in the output.
+# Maximum number of tokens to generate in the output.
 max_tokens = 2048
 
-# This value controls the penalty applied to repeated words or phrases in the generated text.
-# A value of 0.0 means no penalty, allowing for the repetition of words without any additional cost.
+# Penalty applied to repeated words or phrases in the generated text.
+# A value of 0.0 means no penalty, allowing repeated words without cost.
 frequency_penalty = 0.0
 
-# The presence penalty controls the penalty applied to new lines in the generated text.
-# A value of 0.0 means no penalty, allowing for the repetition of new lines without any additional cost.
+# Penalty applied to new lines in the generated text.
+# A value of 0.0 means no penalty, allowing repeated new lines without cost.
 presence_penalty = 0.0
-
-
-
