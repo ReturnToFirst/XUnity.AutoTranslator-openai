@@ -103,4 +103,4 @@ async def status_handler():
 
 
 if __name__ == "__main__":
-    uvicorn.run(proxy_server)
+    uvicorn.run(proxy_server, host=config.server_config.host, port=config.server_config.port)
