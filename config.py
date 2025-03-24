@@ -163,3 +163,48 @@ class Config:
             database_config=DatabaseConfig.from_dict(config_dict['database']),
             logging_config=LoggingConfig.from_dict(config_dict['logging']),
         )
+
+    @classmethod
+    def from_args(cls, args):
+        """
+        Create a Config instance from command-line arguments.
+
+        Args:
+            args: Parsed command-line arguments.
+
+        Returns:
+            Config: An instance of Config with values from the provided arguments.
+        """
+        return cls(
+            openai_config=OpenAIConfig.from_dict({
+                "base_url": args.base_url,
+                "api_key": args.api_key,
+                "model_name": args.model_name
+            }),
+            model_config=ModelConfig.from_dict({
+                "temperature": args.temperature,
+                "max_tokens": args.max_tokens,
+                "frequency_penalty": args.frequency_penalty,
+                "presence_penalty": args.presence_penalty
+            }),
+            server_config=ServerConfig.from_dict({
+                "host": args.host,
+                "port": args.port
+            }),
+            history_config=HistoryConfig.from_dict({
+                "use_history": args.use_history,
+                "max_history": args.max_history,
+                "use_latest_history": args.use_latest_history
+            }),
+            database_config=DatabaseConfig.from_dict({
+                "db_file": args.db_file,
+                "cache_translation": args.cache_translation,
+                "use_cached_translation": args.use_cached_translation,
+                "use_latest_records": args.use_latest_records,
+                "init_latest_records": args.init_latest_records
+            }),
+            logging_config=LoggingConfig.from_dict({
+                "log_file": args.log_file,
+                "log_level": args.log_level
+            })
+        )
