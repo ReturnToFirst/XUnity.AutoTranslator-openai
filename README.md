@@ -19,6 +19,7 @@ pip3 install -r requirements.txt
 ```
 
 ## Usage
+### Local Usage
 1. Install Dependencies
 2. Configure the provider in XUnity.AutoTranslator:
     1. Change Provider to 'CustomTranslate' in [Service] section.
@@ -36,6 +37,28 @@ pip3 install -r requirements.txt
         python3 main.py
         ```
 
+### Docker Usage
+#### docker run
+If you want to run it with `docker run`, use command below.
+
+```bash
+docker run -d \
+  --name xunity \
+  -e BASE_URL="https://api.openai.com/v1" \
+  -e API_KEY="api_key_here" \
+  -e MODEL_NAME="gpt-3.5-turbo" \
+  -e SQLITE_DB_PATH="translation.db"
+  -v ./translation.db:/app/translation.db
+  -p 5000:5000 \
+  ghcr.io/returntofirst/xunity-autotranslator-openai:latest
+```
+This command will server on port `5000`.
+
+#### docker compose
+If you want to run this container with `docker compose`, use [docker-compose.yaml](docker-compose.yaml) to configure container
+
+#### Kubernetes
+If you want to run this container with kubernetes, use [k8s-example.yaml](k8s-example.yaml) to configure container
 ## Features
 ### Translation Provider
 - CustomTranslate Endpoint: Integrate with XUnity.AutoTranslator using a custom endpoint that leverages OpenAI's translation capabilities.
@@ -78,3 +101,7 @@ pip3 install -r requirements.txt
         - [ ] Translation history
             - [ ] Pre-translated dictonary
             - [ ] Remove bad translation
+- [x] Deployment
+    - [x] Github Actions
+    - [x] Docker-compose
+    - [x] Kubernetes
