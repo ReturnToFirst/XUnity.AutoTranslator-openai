@@ -23,7 +23,7 @@ ARGS=""
 [ "$USE_LATEST_HISTORY" != "0" ] && ARGS="${ARGS} --use-latest-history"
 
 # Database Config
-[ -n "$DB_TYPE" ] && ARGS="${ARGS} --db_type $DB_TYPE"
+[ -n "$DB_TYPE" ] && ARGS="${ARGS} --db-type $DB_TYPE"
 [ "$CACHE_TRANSLATION" != "0" ] && ARGS="${ARGS} --cache-translation"
 [ "$USE_CACHED_TRANSLATION" != "0" ] && ARGS="${ARGS} --use-cached-translation"
 [ "$USE_LATEST_RECORDS" != "0" ] && ARGS="${ARGS} --use-latest-records"
