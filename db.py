@@ -6,7 +6,7 @@ from config import DatabaseConfig
 
 @dataclass
 class DB:
-    connector: Union[sqlite3.Connection]
+    connector: Union[sqlite3.Connection, psycopg.Connection]
     cursor: Union[sqlite3.Cursor, psycopg.Cursor]
     db_config: DatabaseConfig
 
@@ -103,7 +103,7 @@ class DB:
                 
         cls.cursor.execute(cls._fill_placeholder(query), (src_lang, tgt_lang, index))
         records = cls.cursor.fetchall()
-        
+
         return [TranslationRecord(record[0], record[1], record[2], record[3]) for record in records]
     
     @classmethod
