@@ -343,7 +343,7 @@ def parse_args():
     # Prompt Config
     parser.add_argument("--task-template", type=str, default="Translate text in the {src_start}{src_end} section to the target language as naturally as possible, considering the context in the translation history and ensuring consistency and cultural relevance. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section.", help="Template for the translation task")
     parser.add_argument("--specify-language", action="store_true", help="Specify source and target languages in the prompt")
-    parser.add_argument("--language-template", type=str, default="Translate from {src_lang} to {tgt_lang}", help="Template for specifying languages")
+    parser.add_argument("--language-template", type=str, default="Source language : {src_lang}\nTarget language : {tgt_lang}", help="Template for specifying languages")
 
     # Tag Config
     parser.add_argument("--src-start", type=str, default="<src>", help="Start tag for the source language")
