@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import PlainTextResponse
 import uvicorn
-from prompt import Prompt
+
 from config import Config, parse_args
 from openai_client import LLMClient
 from db import DB
@@ -9,8 +9,10 @@ from db import DB
 
 proxy_server = FastAPI()
 args = parse_args()
-if args.config_file:
-    config = Config.from_toml("config.toml")
+if args.config:
+    config = Config.from_toml(args.config)
+else:
+    config = Config.from_args(args)
 client = LLMClient.from_config(config)
 db = DB.from_file(config.database_config.db_file)
 

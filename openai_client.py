@@ -51,6 +51,7 @@ class LLMClient:
             str: The content of the response message from the language model.
             Exception: An exception if an error occurs during the API call.
         """
+
         try:
             completion = self.client.chat.completions.create(
                         model=self.config.openai_config.model_name,
