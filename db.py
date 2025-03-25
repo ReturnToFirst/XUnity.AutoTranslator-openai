@@ -1,14 +1,27 @@
 import sqlite3
-from dataclasses import dataclass
+import psycopg
+from dataclasses import dataclass, field
+from typing import Union
+from config import DatabaseConfig
 
 @dataclass
 class DB:
-    connector: sqlite3.Connection
-    cursor: sqlite3.Cursor
+    connector: Union[sqlite3.Connection]
+    cursor: Union[sqlite3.Cursor, psycopg.Cursor]
+    db_config: DatabaseConfig = field(init=False)
 
     @classmethod
-    def from_file(cls, db_file: str):
-        connector = sqlite3.connect(db_file)
+    def from_config(cls, db_config: DatabaseConfig):
+        cls.db_config = db_config
+        match cls.db_config.db_type:
+            case "sqlite":
+                connector = sqlite3.connect(db_config.sqlite_config.db_path)
+            case "postgres":
+                connector = psycopg.connect("host=%s port=%d dbname=%s user=%s password=%s".format(cls.db_config.postgres_config.host,
+                                                                                    cls.db_config.postgres_config.port,
+                                                                                    cls.db_config.postgres_config.db,
+                                                                                    cls.db_config.postgres_config.user,
+                                                                                    cls.db_config.postgres_config.password))
         cursor = connector.cursor()
 
         if "translations" not in cls.get_table_list(cursor):
@@ -17,8 +30,14 @@ class DB:
         return cls(connector, cursor)
         
     @classmethod
-    def get_table_list(cls, cursor: sqlite3.Cursor) -> list:
-        cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'")
+    def get_table_list(cls, cursor: Union[sqlite3.Cursor, psycopg.Cursor]) -> list:
+        match cls.db_config.db_type:
+            case "sqlite":
+                query = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'"
+            case "postgres":
+                query = "SELECT * FROM information_schema.tables"
+
+        cursor.execute(query)
         return [t[0] for t in cursor.fetchall()]
 
     @classmethod

@@ -14,7 +14,7 @@ if args.config:
 else:
     config = Config.from_args(args)
 client = LLMClient.from_config(config)
-db = DB.from_file(config.database_config.db_file)
+db = DB.from_config(config.database_config)
 
 @proxy_server.get("/translate", response_class=PlainTextResponse)
 async def translation_handler(

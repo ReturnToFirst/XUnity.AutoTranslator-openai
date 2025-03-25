@@ -74,13 +74,58 @@ class ServerConfig:
         return cls(**config_dict)
 
 @dataclass
+class SQLiteConfig:
+    """Configuration for SQLite database."""
+    db_path: str
+
+    @classmethod
+    def from_dict(cls, config_dict: dict):
+        """Create a PostgresConfig instance from dictionary.
+
+        Args:
+            config_dict (dict): Dictionary containing the database configuration.
+
+        Returns:
+            DatabaseConfig: Instance of DatabaseConfig with provided configuration.
+        """
+        return cls(db_path=config_dict['db_path'])
+
+
+@dataclass
+class PostgresConfig:
+    """Configuration for PostgreSQL database."""
+    host: str
+    port: int
+    user: str
+    password: str
+    db: str
+    @classmethod
+    def from_dict(cls, config_dict: dict):
+        """Create a PostgresConfig instance from dictionary.
+
+        Args:
+            config_dict (dict): Dictionary containing the database configuration.
+
+        Returns:
+            DatabaseConfig: Instance of DatabaseConfig with provided configuration.
+        """
+        return cls(host=config_dict['host'],
+                   port=config_dict['port'],
+                   user=config_dict['user'],
+                   password=config_dict['password'],
+                   db=config_dict['db'])
+
+
+@dataclass
 class DatabaseConfig:
     """Dataclass to store the configuration for the database, including the file path."""
-    db_file: str
+    db_type: str
     cache_translation: bool
     use_cached_translation: bool
     use_latest_records: bool
     init_latest_records: int
+    sqlite_config: SQLiteConfig
+    postgres_config: PostgresConfig
 
     @classmethod
     def from_dict(cls, config_dict: dict):
@@ -92,7 +137,18 @@ class DatabaseConfig:
         Returns:
             DatabaseConfig: Instance of DatabaseConfig with provided configuration.
         """
-        return cls(**config_dict)
+
+        print(config_dict)
+        return cls(
+            db_type=config_dict['db_type'],
+            cache_translation=config_dict['cache_translation'],
+            use_cached_translation=config_dict['use_cached_translation'],
+            use_latest_records=config_dict['use_latest_records'],
+            init_latest_records=config_dict['init_latest_records'],
+            sqlite_config = SQLiteConfig.from_dict(config_dict['sqlite_config']),
+            postgres_config = PostgresConfig.from_dict(config_dict['postgres_config'])
+        )
+
 
 @dataclass
 class HistoryConfig:
@@ -202,11 +258,21 @@ class Config:
                 "use_latest_history": args.use_latest_history
             }),
             database_config=DatabaseConfig.from_dict({
-                "db_file": args.db_file,
+                "db_type": args.db_type,
                 "cache_translation": args.cache_translation,
                 "use_cached_translation": args.use_cached_translation,
                 "use_latest_records": args.use_latest_records,
-                "init_latest_records": args.init_latest_records
+                "init_latest_records": args.init_latest_records,
+                "sqlite_config": {
+                    "db_path": args.sqlite_db_path
+                },
+                "postgres_config": {
+                    "host": args.postgres_host,
+                    "port": args.postgres_port,
+                    "user": args.postgres_user,
+                    "password": args.postgres_password,
+                    "db": args.postgres_db
+                }
             }),
             logging_config=LoggingConfig.from_dict({
                 "log_file": args.log_file,
@@ -255,11 +321,21 @@ def parse_args():
     parser.add_argument("--use_latest_history", action="store_true", help="Use latest history records")
     
     # Database Config
-    parser.add_argument("--db_file", type=str, default="translated_texts.db", help="Path to the database file")
+    parser.add_argument("--db_type", type=str, default="sqlite", help="Database type to use")
     parser.add_argument("--cache_translation", action="store_true",  help="Enable translation caching")
     parser.add_argument("--use_cached_translation", action="store_true", help="Use cached translations if available")
     parser.add_argument("--use_latest_records", action="store_true", help="Use latest database records")
     parser.add_argument("--init_latest_records", type=int, default=20, help="Number of initial latest records")
+
+    # PostgreSQL Configs
+    parser.add_argument("--postgres_host", type=str, default="localhost", help="PostgreSQL server host")
+    parser.add_argument("--postgres_port", type=int, default=5432, help="PostgreSQL server port")
+    parser.add_argument("--postgres_user", type=str, help="PostgreSQL username")
+    parser.add_argument("--postgres_password", type=str, help="PostgreSQL password")
+    parser.add_argument("--postgres_db", type=str, help="PostgreSQL database name")
+
+    # SQLite Config 
+    parser.add_argument("--sqlite_db_path", type=str, default="translated_texts.db", help="Path to the SQLite database file")
     
     # Logging Config
     parser.add_argument("--log_file", type=str, help="Log file path")
