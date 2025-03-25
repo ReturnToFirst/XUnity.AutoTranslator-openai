@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import toml
+import argparse
 
 
 @dataclass
@@ -208,3 +209,39 @@ class Config:
                 "log_level": args.log_level
             })
         )
+    
+def parse_args():
+    parser = argparse.ArgumentParser(description="Application Configuration CLI")
+    
+    # OpenAI Config
+    parser.add_argument("--base_url", type=str, default="https://api.openai.com/v1", help="Base URL for OpenAI API")
+    parser.add_argument("--api_key", type=str, required=True, help="openai")
+    parser.add_argument("--model_name", type=str, default="gpt-3.5-turbo", help="OpenAI model name")
+    
+    # Model Config
+    parser.add_argument("--temperature", type=float, default=0.0, help="Model temperature (randomness control)")
+    parser.add_argument("--max_tokens", type=int, default=2048, help="Maximum number of tokens to generate")
+    parser.add_argument("--frequency_penalty", type=float, default=0.0, help="Penalty for repeated tokens")
+    parser.add_argument("--presence_penalty", type=float, default=0.0, help="Penalty for new tokens")
+    
+    # Server Config
+    parser.add_argument("--host", type=str, default="0.0.0.0", help="Server host address")
+    parser.add_argument("--port", type=int, default=5000, help="Server port")
+    
+    # History Config
+    parser.add_argument("--use_history", action="store_true", default=True, help="Enable history usage")
+    parser.add_argument("--max_history", type=int, default=30, help="Maximum number of history records")
+    parser.add_argument("--use_latest_history", action="store_true", default=True, help="Use latest history records")
+    
+    # Database Config
+    parser.add_argument("--db_file", type=str, default="translated_texts.db", help="Path to the database file")
+    parser.add_argument("--cache_translation", action="store_true", default=True, help="Enable translation caching")
+    parser.add_argument("--use_cached_translation", action="store_true", default=True, help="Use cached translations if available")
+    parser.add_argument("--use_latest_records", action="store_true", default=True, help="Use latest database records")
+    parser.add_argument("--init_latest_records", type=int, default=30, help="Number of initial latest records")
+    
+    # Logging Config
+    parser.add_argument("--log_file", type=str, default="app.log", help="Log file path")
+    parser.add_argument("--log_level", type=str, choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], default="INFO", help="Logging level")
+    
+    return parser.parse_args()
