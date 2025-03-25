@@ -1,5 +1,4 @@
 from dataclasses import dataclass, field
-import toml
 import re
 
 @dataclass
@@ -103,6 +102,7 @@ class Template:
         Returns:
             str: The extracted translated text.
         """
+        print(tgt_text)
         match = self.tgt_regex.search(tgt_text)
         return match.group(1) if match else ""
 
