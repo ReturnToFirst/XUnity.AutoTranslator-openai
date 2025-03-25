@@ -47,8 +47,8 @@ docker run -d \
   -e BASE_URL="https://api.openai.com/v1" \
   -e API_KEY="api_key_here" \
   -e MODEL_NAME="gpt-3.5-turbo" \
-  -e SQLITE_DB_PATH="translation.db"
-  -v ./translation.db:/app/translation.db
+  -e SQLITE_DB_PATH="translation.db" \
+  -v ./translation.db:/app/translation.db \
   -p 5000:5000 \
   ghcr.io/returntofirst/xunity-autotranslator-openai:latest
 ```
