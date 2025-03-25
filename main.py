@@ -1,17 +1,20 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import PlainTextResponse
 import uvicorn
-from prompt import Prompt
-from config import Config
+
+from config import Config, parse_args
 from openai_client import LLMClient
 from db import DB
 
 
 proxy_server = FastAPI()
-config = Config.from_toml("config.toml")
-prompt = Prompt.from_toml("prompt.toml")
-client = LLMClient.from_config(config, prompt)
-db = DB.from_file(config.database_config.db_file)
+args = parse_args()
+if args.config:
+    config = Config.from_toml(args.config)
+else:
+    config = Config.from_args(args)
+client = LLMClient.from_config(config)
+db = DB.from_config(config.database_config)
 
 @proxy_server.get("/translate", response_class=PlainTextResponse)
 async def translation_handler(

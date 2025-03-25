@@ -21,7 +21,7 @@ class LLMClient:
     chat_history: ChatHistory = field(default_factory=ChatHistory)
 
     @classmethod
-    def from_config(cls, config: Config, prompt: Prompt):
+    def from_config(cls, config: Config):
         """
         Factory method to create an LLMClient from a Config and Prompt instance.
 
@@ -32,7 +32,7 @@ class LLMClient:
         Returns:
             LLMClient: An instance of LLMClient.
         """
-        return cls(config=config, prompt=prompt)
+        return cls(config=config, prompt=config.prompt)
     
     def __post_init__(self):
         """
@@ -51,6 +51,7 @@ class LLMClient:
             str: The content of the response message from the language model.
             Exception: An exception if an error occurs during the API call.
         """
+
         try:
             completion = self.client.chat.completions.create(
                         model=self.config.openai_config.model_name,

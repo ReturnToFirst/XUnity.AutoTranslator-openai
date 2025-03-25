@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xunity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xunity
+  template:
+    metadata:
+      labels:
+        app: xunity
+    spec:
+      containers:
+        - name: xunity
+          image: ghcr.io/returntofirst/xunity-autotranslator-openai:latest
+          imagePullPolicy: Always
+          env:
+          - name: BASE_URL
+            value: "https://api.openai.com/v1"
+          - name: API_KEY
+            value: "api_key_here"
+          - name: MODEL_NAME
+            value: "gpt-3.5-turbo"
+          - name: DB_TYPE
+            value: "postgres"
+          - name: POSTGRES_HOST
+            value: "xunity-db"
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_USER
+            value: "xunity"
+          - name: POSTGRES_PASSWORD
+            value: "xunity"
+          - name: POSTGRES_DB
+            value: "xunity"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xunity-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xunity-db
+  template:
+    metadata:
+      labels:
+        app: xunity-db
+    spec:
+      containers:
+        - name: xunity-db
+          image: postgres:alpine
+          imagePullPolicy: Always
+          env:
+          - name: POSTGRES_DB
+            value: "xunity"
+          - name: POSTGRES_USER
+            value: "xunity"
+          - name: POSTGRES_PASSWORD
+            value: "xunity"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xunity-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      protocol: TCP
+  selector:
+    app: xunity-db
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xunity
+spec:
+  type: NodePort
+  ports:
+    - port: 5000
+      targetPort: 5000
+      nodePort: 32001
+      protocol: TCP
+  selector:
+    app: xunity

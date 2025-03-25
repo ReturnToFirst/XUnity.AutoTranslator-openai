@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  xunity-db:
+    image: postgres:alpine
+    environment:
+      POSTGRES_DB: "xunity"
+      POSTGRES_USER: "xunity"
+      POSTGRES_PASSWORD: "xunity"
+    ports:
+      - "5432:5432"
+    networks:
+      - xunity-network
+
+  xunity:
+    image: ghcr.io/returntofirst/xunity-autotranslator-openai:latest
+    environment:
+      BASE_URL: "https://api.openai.com/v1"
+      API_KEY: "api_key_here"
+      MODEL_NAME: "gpt-3.5-turbo"
+      DB_TYPE: "postgres"
+      POSTGRES_HOST: "xunity-db"
+      POSTGRES_PORT: "5432"
+      POSTGRES_USER: "xunity"
+      POSTGRES_PASSWORD: "xunity"
+      POSTGRES_DB: "xunity"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - xunity-db
+    networks:
+      - xunity-network
+
+networks:
+  xunity-network:
+    driver: bridge

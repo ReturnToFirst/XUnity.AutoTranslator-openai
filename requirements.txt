@@ -2,3 +2,4 @@ fastapi
 uvicorn
 openai
 toml
+psycopg[binary,pool]
