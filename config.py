@@ -215,7 +215,7 @@ def parse_args():
     
     # OpenAI Config
     parser.add_argument("--base_url", type=str, default="https://api.openai.com/v1", help="Base URL for OpenAI API")
-    parser.add_argument("--api_key", type=str, required=True, help="openai")
+    parser.add_argument("--api_key", type=str, help="openai")
     parser.add_argument("--model_name", type=str, default="gpt-3.5-turbo", help="OpenAI model name")
     
     # Model Config
@@ -243,5 +243,9 @@ def parse_args():
     # Logging Config
     parser.add_argument("--log_file", type=str, default="", help="Log file path")
     parser.add_argument("--log_level", type=str, choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], default="INFO", help="Logging level")
+
+    # Configuration Files
+    parser.add_argument("--config-file", type=str, default="config.toml", help="Path to the TOML configuration file")
+    parser.add_argument("--prompt-file", type=str, default="prompt.toml", help="Path to the prompt file")
     
     return parser.parse_args()
