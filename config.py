@@ -211,6 +211,23 @@ class Config:
             logging_config=LoggingConfig.from_dict({
                 "log_file": args.log_file,
                 "log_level": args.log_level
+            }),
+            prompt=Prompt.from_dict({
+            "template": {
+                "task_template": args.task_template,
+                "specify_language": args.specify_language,
+                "language_template": args.language_template,
+                "tag": {
+                    "src_start": args.src_start,
+                    "src_end": args.src_end,
+                    "tgt_start": args.tgt_start,
+                    "tgt_end": args.tgt_end
+                }
+            },
+            "system_prompt": {
+                "use_system_prompt": args.use_system_prompt,
+                "system_prompt": args.system_prompt
+            }
             })
         )
     
@@ -219,7 +236,7 @@ def parse_args():
     
     # OpenAI Config
     parser.add_argument("--base_url", type=str, default="https://api.openai.com/v1", help="Base URL for OpenAI API")
-    parser.add_argument("--api_key", type=str, help="openai")
+    parser.add_argument("--api_key", type=str, required=True, help="openai")
     parser.add_argument("--model_name", type=str, default="gpt-3.5-turbo", help="OpenAI model name")
     
     # Model Config
@@ -234,7 +251,7 @@ def parse_args():
     
     # History Config
     parser.add_argument("--use_history", action="store_true", help="Enable history usage")
-    parser.add_argument("--max_history", type=int, default=30, help="Maximum number of history records")
+    parser.add_argument("--max_history", type=int, default=20, help="Maximum number of history records")
     parser.add_argument("--use_latest_history", action="store_true", help="Use latest history records")
     
     # Database Config
@@ -242,13 +259,28 @@ def parse_args():
     parser.add_argument("--cache_translation", action="store_true",  help="Enable translation caching")
     parser.add_argument("--use_cached_translation", action="store_true", help="Use cached translations if available")
     parser.add_argument("--use_latest_records", action="store_true", help="Use latest database records")
-    parser.add_argument("--init_latest_records", type=int, default=30, help="Number of initial latest records")
+    parser.add_argument("--init_latest_records", type=int, default=20, help="Number of initial latest records")
     
     # Logging Config
-    parser.add_argument("--log_file", type=str, default="", help="Log file path")
+    parser.add_argument("--log_file", type=str, help="Log file path")
     parser.add_argument("--log_level", type=str, choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], default="INFO", help="Logging level")
 
+    # Prompt Config
+    parser.add_argument("--task_template", type=str, default="Translate text in the {src_start}{src_end} section to the target language as naturally as possible, considering the context in the translation history and ensuring consistency and cultural relevance. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section.", help="Template for the translation task")
+    parser.add_argument("--specify_language", action="store_true", help="Specify source and target languages in the prompt")
+    parser.add_argument("--language_template", type=str, default="Translate from {src_lang} to {tgt_lang}", help="Template for specifying languages")
+
+    # Tag Config
+    parser.add_argument("--src_start", type=str, default="<src>", help="Start tag for the source language")
+    parser.add_argument("--src_end", type=str, default="</src>", help="End tag for the source language")
+    parser.add_argument("--tgt_start", type=str, default="<tgt>", help="Start tag for the target language")
+    parser.add_argument("--tgt_end", type=str, default="</tgt>", help="End tag for the target language")
+
+    # System Prompt Config
+    parser.add_argument("--use_system_prompt", action="store_true", help="Enable system prompt")
+    parser.add_argument("--system_prompt", type=str, help="System prompt to be used")
+    
     # Configuration Files
-    parser.add_argument("--config-file", type=str, default="config.toml", help="Path to the TOML configuration file")
+    parser.add_argument("--config", type=str, help="Path to the TOML configuration file")
     
     return parser.parse_args()
