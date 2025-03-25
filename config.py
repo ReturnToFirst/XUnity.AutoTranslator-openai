@@ -138,7 +138,6 @@ class DatabaseConfig:
             DatabaseConfig: Instance of DatabaseConfig with provided configuration.
         """
 
-        print(config_dict)
         return cls(
             db_type=config_dict['db_type'],
             cache_translation=config_dict['cache_translation'],
@@ -301,60 +300,60 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Application Configuration CLI")
     
     # OpenAI Config
-    parser.add_argument("--base_url", type=str, default="https://api.openai.com/v1", help="Base URL for OpenAI API")
-    parser.add_argument("--api_key", type=str, required=True, help="openai")
-    parser.add_argument("--model_name", type=str, default="gpt-3.5-turbo", help="OpenAI model name")
+    parser.add_argument("--base-url", type=str, default="https://api.openai.com/v1", help="Base URL for OpenAI API")
+    parser.add_argument("--api-key", type=str, required=True, help="openai")
+    parser.add_argument("--model-name", type=str, default="gpt-3.5-turbo", help="OpenAI model name")
     
     # Model Config
     parser.add_argument("--temperature", type=float, default=0.0, help="Model temperature (randomness control)")
-    parser.add_argument("--max_tokens", type=int, default=2048, help="Maximum number of tokens to generate")
-    parser.add_argument("--frequency_penalty", type=float, default=0.0, help="Penalty for repeated tokens")
-    parser.add_argument("--presence_penalty", type=float, default=0.0, help="Penalty for new tokens")
+    parser.add_argument("--max-tokens", type=int, default=2048, help="Maximum number of tokens to generate")
+    parser.add_argument("--frequency-penalty", type=float, default=0.0, help="Penalty for repeated tokens")
+    parser.add_argument("--presence-penalty", type=float, default=0.0, help="Penalty for new tokens")
     
     # Server Config
     parser.add_argument("--host", type=str, default="0.0.0.0", help="Server host address")
     parser.add_argument("--port", type=int, default=5000, help="Server port")
     
     # History Config
-    parser.add_argument("--use_history", action="store_true", help="Enable history usage")
-    parser.add_argument("--max_history", type=int, default=20, help="Maximum number of history records")
-    parser.add_argument("--use_latest_history", action="store_true", help="Use latest history records")
+    parser.add_argument("--use-history", action="store_true", help="Enable history usage")
+    parser.add_argument("--max-history", type=int, default=20, help="Maximum number of history records")
+    parser.add_argument("--use-latest-history", action="store_true", help="Use latest history records")
     
     # Database Config
-    parser.add_argument("--db_type", type=str, default="sqlite", help="Database type to use")
-    parser.add_argument("--cache_translation", action="store_true",  help="Enable translation caching")
-    parser.add_argument("--use_cached_translation", action="store_true", help="Use cached translations if available")
-    parser.add_argument("--use_latest_records", action="store_true", help="Use latest database records")
-    parser.add_argument("--init_latest_records", type=int, default=20, help="Number of initial latest records")
+    parser.add_argument("--db-type", type=str, default="sqlite", help="Database type to use")
+    parser.add_argument("--cache-translation", action="store_true",  help="Enable translation caching")
+    parser.add_argument("--use-cached-translation", action="store_true", help="Use cached translations if available")
+    parser.add_argument("--use-latest-records", action="store_true", help="Use latest database records")
+    parser.add_argument("--init-latest-records", type=int, default=20, help="Number of initial latest records")
 
     # PostgreSQL Configs
-    parser.add_argument("--postgres_host", type=str, default="localhost", help="PostgreSQL server host")
-    parser.add_argument("--postgres_port", type=int, default=5432, help="PostgreSQL server port")
-    parser.add_argument("--postgres_user", type=str, help="PostgreSQL username")
-    parser.add_argument("--postgres_password", type=str, help="PostgreSQL password")
-    parser.add_argument("--postgres_db", type=str, help="PostgreSQL database name")
+    parser.add_argument("--postgres-host", type=str, default="localhost", help="PostgreSQL server host")
+    parser.add_argument("--postgres-port", type=int, default=5432, help="PostgreSQL server port")
+    parser.add_argument("--postgres-user", type=str, help="PostgreSQL username")
+    parser.add_argument("--postgres-password", type=str, help="PostgreSQL password")
+    parser.add_argument("--postgres-db", type=str, help="PostgreSQL database name")
 
     # SQLite Config 
-    parser.add_argument("--sqlite_db_path", type=str, default="translated_texts.db", help="Path to the SQLite database file")
+    parser.add_argument("--sqlite-db-path", type=str, default="translated_texts.db", help="Path to the SQLite database file")
     
     # Logging Config
-    parser.add_argument("--log_file", type=str, help="Log file path")
-    parser.add_argument("--log_level", type=str, choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], default="INFO", help="Logging level")
+    parser.add_argument("--log-file", type=str, help="Log file path")
+    parser.add_argument("--log-level", type=str, choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], default="INFO", help="Logging level")
 
     # Prompt Config
-    parser.add_argument("--task_template", type=str, default="Translate text in the {src_start}{src_end} section to the target language as naturally as possible, considering the context in the translation history and ensuring consistency and cultural relevance. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section.", help="Template for the translation task")
-    parser.add_argument("--specify_language", action="store_true", help="Specify source and target languages in the prompt")
-    parser.add_argument("--language_template", type=str, default="Translate from {src_lang} to {tgt_lang}", help="Template for specifying languages")
+    parser.add_argument("--task-template", type=str, default="Translate text in the {src_start}{src_end} section to the target language as naturally as possible, considering the context in the translation history and ensuring consistency and cultural relevance. Translated text must be enclosed in the {tgt_start}{tgt_end} section. You must respond with only the {tgt_end} section.", help="Template for the translation task")
+    parser.add_argument("--specify-language", action="store_true", help="Specify source and target languages in the prompt")
+    parser.add_argument("--language-template", type=str, default="Translate from {src_lang} to {tgt_lang}", help="Template for specifying languages")
 
     # Tag Config
-    parser.add_argument("--src_start", type=str, default="<src>", help="Start tag for the source language")
-    parser.add_argument("--src_end", type=str, default="</src>", help="End tag for the source language")
-    parser.add_argument("--tgt_start", type=str, default="<tgt>", help="Start tag for the target language")
-    parser.add_argument("--tgt_end", type=str, default="</tgt>", help="End tag for the target language")
+    parser.add_argument("--src-start", type=str, default="<src>", help="Start tag for the source language")
+    parser.add_argument("--src-end", type=str, default="</src>", help="End tag for the source language")
+    parser.add_argument("--tgt-start", type=str, default="<tgt>", help="Start tag for the target language")
+    parser.add_argument("--tgt-end", type=str, default="</tgt>", help="End tag for the target language")
 
     # System Prompt Config
-    parser.add_argument("--use_system_prompt", action="store_true", help="Enable system prompt")
-    parser.add_argument("--system_prompt", type=str, help="System prompt to be used")
+    parser.add_argument("--use-system-prompt", action="store_true", help="Enable system prompt")
+    parser.add_argument("--system-prompt", default="", type=str, help="System prompt to be used")
     
     # Configuration Files
     parser.add_argument("--config", type=str, help="Path to the TOML configuration file")
