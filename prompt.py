@@ -105,6 +105,7 @@ class Template:
         """
         match = self.tgt_regex.search(tgt_text)
         return match.group(1) if match else ""
+
     def get_language_target_prompt(self, src_lang: str, tgt_lang: str) -> str:
         """
         Returns the language target prompt filled with the provided source and target languages.
@@ -157,24 +158,15 @@ class Prompt:
     system_prompt: SystemPrompt
 
     @classmethod
-    def from_toml(cls, prompt_file: str = "prompt.toml"):
+    def from_dict(cls, config_dict: dict):
         """
-        Creates an instance of Prompt from a TOML configuration file.
+        Creates an instance of SystemPrompt from a dictionary.
 
         Args:
-            prompt_file (str): The path to the TOML configuration file. Defaults to "prompt.toml".
+            config_dict (dict): A dictionary containing 'use_system_prompt' and 'system_prompt'.
 
         Returns:
-            Prompt: An instance of the Prompt class with attributes set from the TOML file.
-
-        Raises:
-            Exception: If there is an error loading the configuration file.
+            SystemPrompt: An instance of the SystemPrompt class with attributes set from the dictionary.
         """
-        try:
-            config_dict = toml.load(prompt_file)
-        except Exception as e:
-            print(f"Error loading config file: {e}")
-            raise e
-
         return cls(template=Template.from_dict(config_dict['template']),
                    system_prompt=SystemPrompt.from_dict(config_dict['system_prompt']))

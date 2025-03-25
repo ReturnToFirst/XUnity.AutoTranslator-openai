@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 import toml
 import argparse
-
+from prompt import Prompt
 
 @dataclass
 class OpenAIConfig:
@@ -56,6 +56,7 @@ class ModelConfig:
             ModelConfig: An instance of ModelConfig initialized with the values from the dictionary.
         """
         return cls(**config_dict)
+
 @dataclass
 class ServerConfig:
     """
@@ -71,6 +72,7 @@ class ServerConfig:
     @classmethod
     def from_dict(cls, config_dict: dict):
         return cls(**config_dict)
+
 @dataclass
 class DatabaseConfig:
     """Dataclass to store the configuration for the database, including the file path."""
@@ -101,6 +103,7 @@ class HistoryConfig:
     @classmethod
     def from_dict(cls, config_dict: dict):
         return cls(**config_dict)
+
 @dataclass
 class LoggingConfig:
     """
@@ -116,7 +119,6 @@ class LoggingConfig:
     @classmethod
     def from_dict(cls, config_dict: dict):
         return cls(**config_dict)
-
 
 @dataclass
 class Config:
@@ -136,6 +138,7 @@ class Config:
     history_config: HistoryConfig
     database_config: DatabaseConfig
     logging_config: LoggingConfig
+    prompt: Prompt
 
     @classmethod
     def from_toml(cls, config_file: str = "config.toml"):
@@ -163,6 +166,7 @@ class Config:
             history_config=HistoryConfig.from_dict(config_dict['history']),
             database_config=DatabaseConfig.from_dict(config_dict['database']),
             logging_config=LoggingConfig.from_dict(config_dict['logging']),
+            prompt=Prompt.from_dict(config_dict=config_dict['prompt'])
         )
 
     @classmethod
@@ -246,6 +250,5 @@ def parse_args():
 
     # Configuration Files
     parser.add_argument("--config-file", type=str, default="config.toml", help="Path to the TOML configuration file")
-    parser.add_argument("--prompt-file", type=str, default="prompt.toml", help="Path to the prompt file")
     
     return parser.parse_args()

@@ -11,11 +11,7 @@ proxy_server = FastAPI()
 args = parse_args()
 if args.config_file:
     config = Config.from_toml("config.toml")
-else:
-    config = Config.from_args(args)
-prompt = Prompt.from_toml(args.prompt_file)
-
-client = LLMClient.from_config(config, prompt)
+client = LLMClient.from_config(config)
 db = DB.from_file(config.database_config.db_file)
 
 @proxy_server.get("/translate", response_class=PlainTextResponse)
